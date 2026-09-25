@@ -17,6 +17,10 @@ LOG_FILE="${RUNTIME_DIR}/server.log"
 EXPECTED_VERSION=$(cd "${REPO_DIR}" && "${PYTHON_BIN}" -c 'from app.server import APP_VERSION; print(APP_VERSION)')
 EXPECTED_APPLICATION="whats-new-checker"
 
+# Keep the server cwd inside the repository so Life Hub can verify PID ownership
+# without relying only on the process command line.
+cd "${REPO_DIR}"
+
 health_payload=$(/usr/bin/curl -fsS --max-time 1 "${HEALTH_URL}" 2>/dev/null || true)
 running_application=$(print -r -- "${health_payload}" | "${PYTHON_BIN}" -c 'import json,sys; print(json.load(sys.stdin).get("application", ""))' 2>/dev/null || true)
 running_version=$(print -r -- "${health_payload}" | "${PYTHON_BIN}" -c 'import json,sys; print(json.load(sys.stdin).get("version", ""))' 2>/dev/null || true)
