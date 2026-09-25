@@ -1,0 +1,316 @@
+<!doctype html>
+<html lang="ru">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>whatsNew</title>
+  <link rel="icon" type="image/png" href="/whatsnew-logo-v3.png">
+  <link rel="stylesheet" href="/styles.css">
+</head>
+<body>
+  <div class="shell">
+    <aside class="sidebar">
+      <a class="brand" href="#"><img class="brand-logo" src="/whatsnew-logo-v3.png" alt=""><span>WhatsNew</span></a>
+      <nav aria-label="Основная навигация">
+        <button class="nav-item active" data-view="backlog"><svg class="nav-icon" viewBox="0 0 24 24" aria-hidden="true"><path d="M9 6h11M9 12h11M9 18h11M4 6h.01M4 12h.01M4 18h.01"/></svg>Бэклог</button>
+        <button class="nav-item" data-view="consumed"><svg class="nav-icon" viewBox="0 0 24 24" aria-hidden="true"><path d="M2.5 12s3.5-6 9.5-6 9.5 6 9.5 6-3.5 6-9.5 6-9.5-6-9.5-6Z"/><circle cx="12" cy="12" r="2.7"/></svg>Просмотрено</button>
+        <button class="nav-item" data-view="people"><svg class="nav-icon" viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="8" r="4"/><path d="M4.5 21a7.5 7.5 0 0 1 15 0"/></svg>Персоны</button>
+        <button class="nav-item" data-view="favorites"><svg class="nav-icon" viewBox="0 0 24 24" aria-hidden="true"><path d="m12 3 2.8 5.7 6.2.9-4.5 4.4 1.1 6.2-5.6-2.9-5.6 2.9 1.1-6.2L3 9.6l6.2-.9Z"/></svg>Избранное</button>
+        <button class="nav-item" data-view="trash"><svg class="nav-icon" viewBox="0 0 24 24" aria-hidden="true"><path d="M3 9h18l-1.8 11H4.8L3 9ZM8 9l4-6 4 6M8 12v5M12 12v5M16 12v5"/></svg>Корзина</button>
+      </nav>
+      <div class="sidebar-foot"><span class="status-dot"></span><span>SQLite · локально</span></div>
+    </aside>
+
+    <main>
+      <section id="library-view">
+        <div id="backlog-panel">
+          <div class="backlog-toolbar" role="group" aria-label="Инструменты бэклога">
+            <div class="toolbar-context">
+              <div id="content-type" class="mode-switch content-type-switch" data-testid="content-type" role="group" aria-label="Тип контента">
+                <button type="button" class="active" data-content-type="movie" aria-pressed="true">Фильмы</button>
+                <button type="button" data-content-type="music" aria-pressed="false">Музыка</button>
+              </div>
+              <label class="search backlog-search"><span>⌕</span><input id="search" data-library-search placeholder="Найти фильм"></label>
+              <span id="backlog-count" class="count" aria-label="Количество в очереди"></span>
+            </div>
+            <div class="toolbar-actions">
+              <button id="open-backlog-recommend" class="button primary" type="button">✦ Подобрать похожее</button>
+              <button id="open-backlog-api-recommend" class="button secondary" type="button">↻ Новое от авторов</button>
+              <details class="toolbar-overflow">
+                <summary class="button secondary" title="Другие действия" aria-label="Другие действия">…</summary>
+                <div class="toolbar-overflow-menu">
+                  <button id="open-add" class="toolbar-menu-item" type="button">＋ Добавить вручную</button>
+                  <button id="refresh-tmdb" class="toolbar-menu-item" data-testid="refresh-tmdb" type="button">⟳ Обновить</button>
+                </div>
+              </details>
+              <button id="refresh-stop" class="button danger operation-stop hidden" type="button" data-stop-operation="refresh">Стоп</button>
+            </div>
+          </div>
+          <section class="backlog-moods" aria-labelledby="backlog-moods-title">
+            <div class="backlog-moods-head"><h3 id="backlog-moods-title">Настроение фильмов в бэклоге</h3><button id="refresh-backlog-moods" class="mini-button backlog-moods-refresh" type="button">↻ Обновить</button></div>
+            <div id="backlog-mood-chips" class="backlog-mood-chips" tabindex="0" aria-label="Варианты настроения, горизонтальный список"></div>
+            <p id="backlog-moods-error" class="error"></p>
+            <div id="backlog-moods-progress" class="recommend-progress hidden" role="status" aria-live="polite">
+              <div class="operation-progress-head"><button id="backlog-moods-stop" class="mini-button operation-stop hidden" type="button" data-stop-operation="moods">Стоп</button></div>
+              <div id="backlog-moods-progress-stages"></div>
+            </div>
+          </section>
+          <div id="refresh-progress" class="notice hidden"></div>
+          <div id="refresh-operation-progress" class="recommend-progress hidden" role="status" aria-live="polite"><div id="refresh-progress-stages"></div></div>
+          <div class="table-wrap"><table class="movie-table backlog-table"><thead id="backlog-head"><tr>
+            <th>Постер</th><th class="backlog-title-head"><button class="sort-button" data-sort="title_ru">Название</button></th>
+            <th class="backlog-release-head"><button class="sort-button" data-sort="release_date">Дата выхода</button></th>
+            <th class="backlog-director-head"><button class="sort-button" data-sort="directors">Режиссёр</button></th>
+            <th><button class="sort-button" data-sort="imdb_rating">IMDb / КП</button></th>
+            <th class="key-people-head"><button class="sort-button" data-sort="key_people">Ключевые персоны</button></th>
+            <th class="countries-head"><button class="sort-button" data-sort="countries">Страны</button></th><th class="planned-soon-head"><button class="sort-button planned-soon-sort" data-sort="planned_soon" title="Сначала запланированные" aria-label="Сортировать: сначала запланированные"><svg class="action-icon" viewBox="0 0 24 24" aria-hidden="true"><path d="M8 2v4M16 2v4M3 10h18"/><rect x="3" y="4" width="18" height="18" rx="2"/><path d="m8.5 16 2 2 5-5"/></svg></button></th><th></th>
+          </tr></thead><tbody id="backlog-body"></tbody></table></div>
+          <div id="backlog-empty" class="empty hidden">В бэклоге ничего нет.</div>
+        </div>
+
+        <div id="consumed-panel" class="hidden">
+          <div class="backlog-toolbar consumed-toolbar" role="group" aria-label="Инструменты просмотренного">
+            <div class="mode-switch content-type-switch" role="group" aria-label="Тип контента">
+              <button type="button" class="active" data-content-type="movie" aria-pressed="true">Фильмы</button>
+              <button type="button" data-content-type="music" aria-pressed="false">Музыка</button>
+            </div>
+            <label class="search"><span>⌕</span><input data-library-search placeholder="Найти фильм"></label>
+          </div>
+          <div class="rating-board">
+            <section class="rating-column"><div class="column-head"><span class="column-dot neutral"></span><h2>Оценить</h2><span id="unrated-count" class="count"></span></div><div id="unrated-list" class="card-list"></div></section>
+            <section class="rating-column"><div class="column-head"><span class="column-dot liked"></span><h2>Понравилось</h2><span id="liked-count" class="count"></span></div><div id="liked-list" class="card-list"></div></section>
+            <section class="rating-column"><div class="column-head"><span class="column-dot disliked"></span><h2>Не понравилось</h2><span id="disliked-count" class="count"></span></div><div id="disliked-list" class="card-list"></div></section>
+          </div>
+        </div>
+      </section>
+
+      <section id="favorites-view" class="hidden">
+        <div class="view-utility-bar">
+          <div class="toolbar-context">
+            <div class="mode-switch content-type-switch" role="group" aria-label="Тип контента">
+              <button type="button" class="active" data-content-type="movie" aria-pressed="true">Фильмы</button>
+              <button type="button" data-content-type="music" aria-pressed="false">Музыка</button>
+            </div>
+            <span id="favorites-count" class="count" aria-label="Количество избранного"></span>
+          </div>
+        </div>
+        <div id="favorites-list" class="favorites-board"></div>
+        <div id="favorites-empty" class="empty hidden">В избранном пока ничего нет.</div>
+      </section>
+
+      <section id="people-view" class="hidden">
+        <div class="backlog-toolbar people-toolbar" role="group" aria-label="Инструменты персон">
+          <div class="toolbar-context">
+            <div class="mode-switch content-type-switch" role="group" aria-label="Тип контента">
+              <button type="button" class="active" data-content-type="movie" aria-pressed="true">Фильмы</button>
+              <button type="button" data-content-type="music" aria-pressed="false">Музыка</button>
+            </div>
+            <span id="people-count" class="count" aria-label="Количество персон"></span>
+          </div>
+          <div class="toolbar-actions">
+            <button id="open-people-recommend" class="button primary" type="button">✦ Рекомендовать похожее</button>
+            <details class="toolbar-overflow">
+              <summary class="button secondary" title="Другие действия" aria-label="Другие действия">…</summary>
+              <div class="toolbar-overflow-menu">
+                <button id="open-add-person" class="toolbar-menu-item" type="button">＋ Добавить вручную</button>
+                <button id="refresh-people" class="toolbar-menu-item" data-testid="refresh-people" type="button">⟳ Обновить</button>
+              </div>
+            </details>
+            <label class="search backlog-search"><span>⌕</span><input data-library-search data-search-context="people" placeholder="Найти персону"></label>
+          </div>
+        </div>
+        <div id="people-refresh-progress" class="notice hidden"></div>
+        <div id="movie-people-board" class="people-board">
+          <section class="people-panel"><div class="column-head"><span class="column-dot liked"></span><h2>Режиссёры</h2><span id="directors-count" class="count"></span></div>
+            <div class="table-wrap"><table class="people-table"><thead><tr><th>Фото</th><th><button class="sort-button" data-people-sort="name_ru" data-people-role="director">Имя на русском</button></th><th><button class="sort-button" data-people-sort="name_original" data-people-role="director">Оригинальное имя</button></th><th></th></tr></thead><tbody id="directors-body"></tbody></table></div>
+          </section>
+          <section class="people-panel"><div class="column-head"><span class="column-dot neutral"></span><h2>Актёры</h2><span id="actors-count" class="count"></span></div>
+            <div class="table-wrap"><table class="people-table"><thead><tr><th>Фото</th><th><button class="sort-button" data-people-sort="name_ru" data-people-role="actor">Имя на русском</button></th><th><button class="sort-button" data-people-sort="name_original" data-people-role="actor">Оригинальное имя</button></th><th></th></tr></thead><tbody id="actors-body"></tbody></table></div>
+          </section>
+        </div>
+        <div id="music-people-board" class="people-board hidden">
+          <section class="people-panel"><div class="column-head"><span class="column-dot liked"></span><h2>Исполнители и группы</h2><span id="artists-count" class="count"></span></div>
+            <div class="table-wrap"><table class="people-table"><thead><tr><th>Фото</th><th><button class="sort-button" data-people-sort="name_original" data-people-role="artist">Исполнитель</button></th><th><button class="sort-button" data-people-sort="artist_type" data-people-role="artist">Тип</button></th><th><button class="sort-button" data-people-sort="country" data-people-role="artist">Страна</button></th><th></th></tr></thead><tbody id="artists-body"></tbody></table></div>
+          </section>
+        </div>
+      </section>
+
+      <section id="trash-view" class="hidden">
+        <div class="view-utility-bar">
+          <div class="toolbar-context">
+            <div class="mode-switch content-type-switch" role="group" aria-label="Тип контента">
+              <button type="button" class="active" data-content-type="movie" aria-pressed="true">Фильмы</button>
+              <button type="button" data-content-type="music" aria-pressed="false">Музыка</button>
+            </div>
+            <span id="trash-count" class="count" aria-label="Количество элементов в корзине"></span>
+          </div>
+          <button id="clear-trash" class="button danger" type="button">Очистить всю корзину</button>
+        </div>
+        <div class="trash-board">
+          <section class="people-panel"><div class="column-head"><span class="column-dot neutral"></span><h2 id="trash-content-title">Фильмы</h2><span id="trash-movies-count" class="count"></span></div>
+            <div class="table-wrap"><table class="people-table"><thead id="trash-content-head"></thead><tbody id="trash-movies-body"></tbody></table></div>
+          </section>
+          <section class="people-panel"><div class="column-head"><span class="column-dot neutral"></span><h2 id="trash-people-title">Персоны</h2><span id="trash-people-count" class="count"></span></div>
+            <div class="table-wrap"><table class="people-table"><thead id="trash-people-head"></thead><tbody id="trash-people-body"></tbody></table></div>
+          </section>
+        </div>
+      </section>
+
+    </main>
+  </div>
+
+  <dialog id="details-dialog"><div class="dialog-head"><div><p id="details-eyebrow" class="eyebrow">Карточка фильма</p><h2 id="details-title"></h2></div><div class="dialog-head-actions"><button id="refresh-detail" class="button secondary" type="button">↻ Актуализировать из TMDB</button><button class="dialog-close" type="button" data-close-dialog="details-dialog">×</button></div></div><div id="details-content" class="details-grid"></div></dialog>
+
+  <dialog id="person-details-dialog"><div class="dialog-head"><div><p id="person-details-role" class="eyebrow">Карточка персоны</p><h2 id="person-details-title"></h2></div><div class="dialog-head-actions"><button id="refresh-person-detail" class="button secondary" type="button">↻ Актуализировать из TMDB</button><button class="dialog-close" type="button" data-close-dialog="person-details-dialog">×</button></div></div><div id="person-details-content" class="details-grid"></div></dialog>
+
+  <dialog id="person-photo-view-dialog" class="person-photo-view-dialog"><div class="dialog-head"><div><p class="eyebrow">Просмотр фотографии</p><h2 id="person-photo-view-title"></h2></div><button class="dialog-close" type="button" data-close-dialog="person-photo-view-dialog">×</button></div><div class="person-photo-view-stage"><img id="person-photo-view-image" class="person-photo-view-image" alt=""></div></dialog>
+
+  <dialog id="add-dialog" class="tmdb-search-dialog"><form id="add-form"><div class="dialog-head"><h2>Добавить фильм</h2><button type="button" data-close-dialog="add-dialog">×</button></div><div class="form-grid">
+    <label>Оригинальное название<input name="title_original"></label><label>Название на русском<input name="title_ru"></label>
+    <label>Год<input name="year" type="number"></label><label>Режиссёр<input name="directors"></label>
+    <div class="form-link-field wide"><span>Link</span><p id="add-movie-links" class="detail-links">—</p></div>
+  </div><section id="add-movie-search-results" class="tmdb-search-results hidden" aria-live="polite"><div class="tmdb-search-results-head"><h3>Варианты TMDB</h3><span id="add-movie-search-count" class="count"></span></div><div id="add-movie-search-list" class="tmdb-search-list"></div></section><div id="add-movie-preview" class="details-grid add-movie-preview hidden"></div><p id="add-resolve-status" class="notice hidden"></p><p id="add-error" class="error"></p><div class="dialog-actions add-movie-actions"><div class="dialog-action-row"><button type="button" class="button secondary" data-close-dialog="add-dialog">Отмена</button><button id="clear-add-movie" type="button" class="button secondary">Очистить</button><button id="resolve-movie" type="button" class="button secondary">↻ Актуализировать из TMDB</button></div><div class="dialog-action-row"><button type="button" class="mini-button like reaction-button outline-action-button" data-save-movie="like" title="Понравилось" aria-label="Понравилось"><svg class="action-icon" viewBox="0 0 24 24" aria-hidden="true"><path d="M7 10v11H4a2 2 0 0 1-2-2v-7a2 2 0 0 1 2-2h3Z"/><path d="m7 10 4-7a2 2 0 0 1 3.7 1.5L14 8h5a2 2 0 0 1 2 2.4l-1.6 8a2 2 0 0 1-2 1.6H7"/></svg></button><button type="button" class="mini-button dislike reaction-button outline-action-button" data-save-movie="dislike" title="Не понравилось" aria-label="Не понравилось"><svg class="action-icon" viewBox="0 0 24 24" aria-hidden="true"><g transform="rotate(180 12 12)"><path d="M7 10v11H4a2 2 0 0 1-2-2v-7a2 2 0 0 1 2-2h3Z"/><path d="m7 10 4-7a2 2 0 0 1 3.7 1.5L14 8h5a2 2 0 0 1 2 2.4l-1.6 8a2 2 0 0 1-2 1.6H7"/></g></svg></button><button class="button primary" data-save-movie="backlog" type="submit">Добавить в бэклог</button></div></div></form></dialog>
+
+  <dialog id="add-album-dialog"><form id="add-album-form"><div class="dialog-head"><h2>Добавить альбом</h2><button type="button" data-close-dialog="add-album-dialog">×</button></div><div class="form-grid">
+    <label>Название альбома<input name="title_original" required></label><label>Исполнитель<input name="artists" required></label>
+    <label>Год<input name="year" type="number" min="1900"></label><label>MusicBrainz ID (необязательно)<input name="release_group_mbid"></label>
+    <div class="form-link-field wide"><span>Link</span><p id="add-album-links" class="detail-links">—</p></div>
+  </div><div id="add-album-preview" class="details-grid add-movie-preview hidden"></div><p id="add-album-resolve-status" class="notice hidden"></p><p id="add-album-error" class="error"></p><div class="dialog-actions add-movie-actions"><div class="dialog-action-row"><button type="button" class="button secondary" data-close-dialog="add-album-dialog">Отмена</button><button id="clear-add-album" type="button" class="button secondary">Очистить</button><button id="resolve-album" type="button" class="button secondary">↻ Актуализировать из MusicBrainz</button></div><div class="dialog-action-row"><button type="button" class="mini-button like reaction-button outline-action-button" data-save-album="like" title="Понравилось" aria-label="Понравилось"><svg class="action-icon" viewBox="0 0 24 24" aria-hidden="true"><path d="M7 10v11H4a2 2 0 0 1-2-2v-7a2 2 0 0 1 2-2h3Z"/><path d="m7 10 4-7a2 2 0 0 1 3.7 1.5L14 8h5a2 2 0 0 1 2 2.4l-1.6 8a2 2 0 0 1-2 1.6H7"/></svg></button><button type="button" class="mini-button dislike reaction-button outline-action-button" data-save-album="dislike" title="Не понравилось" aria-label="Не понравилось"><svg class="action-icon" viewBox="0 0 24 24" aria-hidden="true"><g transform="rotate(180 12 12)"><path d="M7 10v11H4a2 2 0 0 1-2-2v-7a2 2 0 0 1 2-2h3Z"/><path d="m7 10 4-7a2 2 0 0 1 3.7 1.5L14 8h5a2 2 0 0 1 2 2.4l-1.6 8a2 2 0 0 1-2 1.6H7"/></g></svg></button><button class="button primary" data-save-album="backlog" type="submit">Добавить в бэклог</button></div></div></form></dialog>
+
+  <dialog id="add-person-dialog" class="tmdb-search-dialog"><form id="add-person-form"><div class="dialog-head"><h2>Добавить персону</h2><button type="button" data-close-dialog="add-person-dialog">×</button></div><div class="form-grid">
+    <label>Тип<select name="role" required><option value="director">Режиссёр</option><option value="actor">Актёр</option></select></label>
+    <label>TMDB ID (необязательно)<input name="tmdb_id" type="number" min="1"></label>
+    <label>Оригинальное имя<input name="name_original"></label><label>Имя на русском<input name="name_ru"></label>
+  </div><section id="add-person-search-results" class="tmdb-search-results hidden" aria-live="polite"><div class="tmdb-search-results-head"><h3>Варианты TMDB</h3><span id="add-person-search-count" class="count"></span></div><div id="add-person-search-list" class="tmdb-search-list"></div></section><p id="add-person-resolve-status" class="notice hidden"></p><p id="add-person-error" class="error"></p><div class="dialog-actions"><button type="button" class="button secondary" data-close-dialog="add-person-dialog">Отмена</button><button id="resolve-person" type="button" class="button secondary">↻ Актуализировать из TMDB</button><button class="button primary" type="submit">Добавить персону</button></div></form></dialog>
+
+  <dialog id="add-artist-dialog"><form id="add-artist-form"><div class="dialog-head"><h2>Добавить исполнителя</h2><button type="button" data-close-dialog="add-artist-dialog">×</button></div><div class="form-grid">
+    <label>Название исполнителя или группы<input name="name" required></label><label>MusicBrainz ID (необязательно)<input name="mbid"></label>
+  </div><p id="add-artist-resolve-status" class="notice hidden"></p><p id="add-artist-error" class="error"></p><div class="dialog-actions"><button type="button" class="button secondary" data-close-dialog="add-artist-dialog">Отмена</button><button id="resolve-artist" type="button" class="button secondary">↻ Актуализировать из MusicBrainz</button><button class="button primary" type="submit">Добавить исполнителя</button></div></form></dialog>
+
+  <dialog id="backlog-recommend-dialog" class="recommend-dialog">
+    <div class="dialog-head"><div><p id="recommend-eyebrow" class="eyebrow">Codex · персональный подбор</p><h2 id="recommend-title">Подобрать похожие фильмы</h2></div><button class="dialog-close" type="button" data-close-dialog="backlog-recommend-dialog">×</button></div>
+    <form id="backlog-recommend-form">
+      <div class="recommend-modal-filters">
+        <div class="filter-control" data-filter-field data-filter-label="IMDb от"><label for="llm-min-imdb-rating">IMDb от</label><div class="filter-input-row"><input id="llm-min-imdb-rating" name="min_imdb_rating" type="number" min="0" max="10" step="0.1" value="7"><button class="filter-toggle" type="button" data-filter-toggle aria-label="Отключить фильтр IMDb от" aria-pressed="true">✓</button></div></div>
+        <div class="filter-control filter-disabled" data-filter-field data-filter-label="Кинопоиск от"><label for="llm-min-kinopoisk-rating">Кинопоиск от</label><div class="filter-input-row"><input id="llm-min-kinopoisk-rating" name="min_kinopoisk_rating" type="number" min="0" max="10" step="0.1" value="7" disabled><button class="filter-toggle" type="button" data-filter-toggle aria-label="Включить фильтр Кинопоиск от" aria-pressed="false">—</button></div></div>
+        <div class="filter-control" data-filter-field data-filter-label="Год от"><label for="llm-year-from">Год от</label><div class="filter-input-row"><input id="llm-year-from" name="year_from" type="number" min="1888" value="2020"><button class="filter-toggle" type="button" data-filter-toggle aria-label="Отключить фильтр Год от" aria-pressed="true">✓</button></div></div>
+        <div class="filter-control" data-filter-field data-filter-label="Год до"><label for="backlog-year-to">Год до</label><div class="filter-input-row"><input id="backlog-year-to" name="year_to" type="number" min="1888"><button class="filter-toggle" type="button" data-filter-toggle aria-label="Отключить фильтр Год до" aria-pressed="true">✓</button></div></div>
+        <div class="filter-control" data-filter-field data-filter-label="Длительность от"><label for="llm-min-runtime">Длительность от, мин</label><div class="filter-input-row"><input id="llm-min-runtime" name="min_runtime" type="number" min="0" max="600" value="100"><button class="filter-toggle" type="button" data-filter-toggle aria-label="Отключить фильтр Длительность от" aria-pressed="true">✓</button></div></div>
+        <div class="filter-control" data-filter-field data-filter-label="Макс. рекомендаций"><label for="llm-result-limit">Макс. рекомендаций</label><div class="filter-input-row"><input id="llm-result-limit" name="limit" type="number" min="1" max="20" value="5"><button class="filter-toggle" type="button" data-filter-toggle aria-label="Отключить фильтр Макс. рекомендаций" aria-pressed="true">✓</button></div></div>
+        <div class="filter-control"><label for="llm-liked-sample-size">Макс. понравившихся фильмов</label><input id="llm-liked-sample-size" name="liked_sample_size" type="number" min="0" max="10000" value="0"></div>
+        <div class="filter-control"><label for="llm-people-sample-size">Макс. любимых персон</label><input id="llm-people-sample-size" name="people_sample_size" type="number" min="0" max="10000" value="0"></div>
+      </div>
+      <label class="recommend-prompt-label">Свободный запрос<textarea name="prompt" rows="6" placeholder="Например: хочу атмосферный детектив без супергероев, похожий по настроению на фильмы Финчера"></textarea></label>
+      <p class="recommend-context-note">К запросу автоматически добавятся понравившиеся фильмы, любимые персоны и все уже добавленные фильмы, включая корзину. Результаты будут уточнены через TMDB, OMDb и Кинопоиск.</p>
+      <p id="backlog-recommend-error" class="error"></p>
+      <div class="dialog-actions"><span id="backlog-recommend-provider" class="api-badge">Codex SDK</span><button class="button secondary" type="button" data-view-llm-prompt>Посмотреть промпт</button><button id="backlog-recommend-submit" class="button primary" type="submit">Подобрать похожее</button></div>
+    </form>
+    <form id="album-recommend-form" class="hidden">
+      <div class="recommend-modal-filters">
+        <div class="filter-control" data-filter-field data-filter-label="Год от"><label>Год от</label><div class="filter-input-row"><input name="year_from" type="number" min="1900" value="2023"><button class="filter-toggle" type="button" data-filter-toggle aria-pressed="true">✓</button></div></div>
+        <div class="filter-control" data-filter-field data-filter-label="Год до"><label>Год до</label><div class="filter-input-row"><input id="album-llm-year-to" name="year_to" type="number" min="1900"><button class="filter-toggle" type="button" data-filter-toggle aria-pressed="true">✓</button></div></div>
+        <div class="filter-control" data-filter-field data-filter-label="Макс. рекомендаций"><label>Макс. рекомендаций</label><div class="filter-input-row"><input name="limit" type="number" min="1" max="20" value="5"><button class="filter-toggle" type="button" data-filter-toggle aria-pressed="true">✓</button></div></div>
+        <div class="filter-control"><label>Макс. понравившихся альбомов</label><input name="liked_sample_size" type="number" min="0" max="10000" value="0"></div>
+        <div class="filter-control"><label>Макс. любимых исполнителей</label><input name="people_sample_size" type="number" min="0" max="10000" value="0"></div>
+      </div>
+      <label class="recommend-prompt-label">Свободный запрос<textarea name="prompt" rows="6" placeholder="Например: хочу атмосферный трип-хоп или дарк-поп без концертных альбомов"></textarea></label>
+      <p class="recommend-context-note">К запросу добавятся понравившиеся альбомы, любимые исполнители и все уже добавленные альбомы, включая корзину. Результат будет проверен через MusicBrainz.</p>
+      <p id="album-recommend-error" class="error"></p>
+      <div class="dialog-actions"><span id="album-recommend-provider" class="api-badge">Codex SDK</span><button class="button secondary" type="button" data-view-llm-prompt>Посмотреть промпт</button><button id="album-recommend-submit" class="button primary" type="submit">Подобрать похожее</button></div>
+    </form>
+    <section id="llm-prompt-preview" class="llm-prompt-preview hidden" aria-live="polite">
+      <p class="eyebrow">Итоговый системный промпт</p>
+      <pre id="llm-prompt-output"></pre>
+    </section>
+    <form id="album-api-form" class="hidden">
+      <div class="people-filter"><details><summary>Исполнители <span id="artists-selected"></span></summary><div class="dropdown-list"><div class="dropdown-search"><input type="search" data-person-search="artist" placeholder="Найти исполнителя" autocomplete="off" aria-label="Поиск исполнителя"></div><label class="select-all"><input type="checkbox" data-select-all="artist"> Выбрать всех</label><div id="artist-options"></div></div></details></div>
+      <div class="filter-grid">
+        <div class="filter-control" data-filter-field data-filter-label="Год от"><label>Год от</label><div class="filter-input-row"><input name="year_from" type="number" min="1900" value="2023"><button class="filter-toggle" type="button" data-filter-toggle aria-label="Отключить фильтр Год от" aria-pressed="true">✓</button></div></div>
+        <div class="filter-control" data-filter-field data-filter-label="Год до"><label>Год до</label><div class="filter-input-row"><input id="album-api-year-to" name="year_to" type="number" min="1900"><button class="filter-toggle" type="button" data-filter-toggle aria-label="Отключить фильтр Год до" aria-pressed="true">✓</button></div></div>
+        <div class="filter-control"><label>Макс. альбомов</label><input name="limit" type="number" min="1" max="50" value="20"></div>
+        <div class="filter-control wide" data-filter-field data-filter-label="Исключить типы"><label>Исключить типы (через запятую)</label><div class="filter-input-row"><input name="excluded_types" value="Compilation, Live, Remix, Soundtrack, DJ-mix, Audio drama, Audiobook, Demo, Field recording, Interview, Mixtape/Street, Spokenword"><button class="filter-toggle" type="button" data-filter-toggle aria-label="Отключить фильтр Исключить типы" aria-pressed="true">✓</button></div></div>
+        <div class="filter-control wide" data-filter-field data-filter-label="Исключить из названия"><label>Исключить из названия (через запятую)</label><div class="filter-input-row"><input name="excluded_title_terms" value="Deluxe"><button class="filter-toggle" type="button" data-filter-toggle aria-label="Отключить фильтр Исключить из названия" aria-pressed="true">✓</button></div></div>
+      </div>
+      <p id="album-api-error" class="error"></p>
+      <div class="dialog-actions"><span id="album-api-provider" class="api-badge">MusicBrainz · публичный API</span><button id="album-api-submit" class="button primary" type="submit">Найти альбомы</button></div>
+    </form>
+    <form id="backlog-api-form" class="hidden">
+      <div class="people-filter">
+        <details><summary>Актёры <span id="actors-selected"></span></summary><div class="dropdown-list"><div class="dropdown-search"><input type="search" data-person-search="actor" placeholder="Найти актёра" autocomplete="off" aria-label="Поиск актёра"></div><label class="select-all"><input type="checkbox" data-select-all="actor"> Выбрать всех</label><div id="actor-options"></div></div></details>
+        <details><summary>Режиссёры <span id="directors-selected"></span></summary><div class="dropdown-list"><div class="dropdown-search"><input type="search" data-person-search="director" placeholder="Найти режиссёра" autocomplete="off" aria-label="Поиск режиссёра"></div><label class="select-all"><input type="checkbox" data-select-all="director"> Выбрать всех</label><div id="director-options"></div></div></details>
+      </div>
+      <div class="filter-grid">
+        <div class="filter-control" data-filter-field data-filter-label="IMDb от"><label for="api-min-imdb-rating">IMDb от</label><div class="filter-input-row"><input id="api-min-imdb-rating" name="min_imdb_rating" type="number" min="0" max="10" step="0.1" value="7"><button class="filter-toggle" type="button" data-filter-toggle aria-label="Отключить фильтр IMDb от" aria-pressed="true">✓</button></div></div>
+        <div class="filter-control" data-filter-field data-filter-label="Кинопоиск от"><label for="api-min-kinopoisk-rating">Кинопоиск от</label><div class="filter-input-row"><input id="api-min-kinopoisk-rating" name="min_kinopoisk_rating" type="number" min="0" max="10" step="0.1" value="7"><button class="filter-toggle" type="button" data-filter-toggle aria-label="Отключить фильтр Кинопоиск от" aria-pressed="true">✓</button></div></div>
+        <div class="filter-control" data-filter-field data-filter-label="Год от"><label for="api-year-from">Год от</label><div class="filter-input-row"><input id="api-year-from" name="year_from" type="number" value="2020"><button class="filter-toggle" type="button" data-filter-toggle aria-label="Отключить фильтр Год от" aria-pressed="true">✓</button></div></div>
+        <div class="filter-control" data-filter-field data-filter-label="Год до"><label for="api-year-to">Год до</label><div class="filter-input-row"><input id="api-year-to" name="year_to" type="number" min="1888"><button class="filter-toggle" type="button" data-filter-toggle aria-label="Отключить фильтр Год до" aria-pressed="true">✓</button></div></div>
+        <div class="filter-control filter-disabled" data-filter-field data-filter-label="Мин. голосов"><label for="api-min-votes">Мин. голосов</label><div class="filter-input-row"><input id="api-min-votes" name="min_votes" type="number" value="100" disabled><button class="filter-toggle" type="button" data-filter-toggle aria-label="Включить фильтр Мин. голосов" aria-pressed="false">—</button></div></div>
+        <div class="filter-control" data-filter-field data-filter-label="Мин. длительность"><label for="api-min-runtime">Мин. длительность</label><div class="filter-input-row"><input id="api-min-runtime" name="min_runtime" type="number" value="100"><button class="filter-toggle" type="button" data-filter-toggle aria-label="Отключить фильтр Мин. длительность" aria-pressed="true">✓</button></div></div>
+        <div class="filter-control"><label for="api-result-limit">Макс. фильмов</label><input id="api-result-limit" name="limit" type="number" min="1" max="50" value="20"></div>
+        <div class="filter-control wide" data-filter-field data-filter-label="Исключить жанры"><label for="api-excluded-genres">Исключить жанры</label><div class="filter-input-row"><input id="api-excluded-genres" name="excluded_genres" value="Animation, Documentary"><button class="filter-toggle" type="button" data-filter-toggle aria-label="Отключить фильтр Исключить жанры" aria-pressed="true">✓</button></div></div>
+      </div>
+      <p id="backlog-api-error" class="error"></p>
+      <div class="dialog-actions"><span id="backlog-api-provider" class="api-badge">TMDB</span><button id="backlog-api-submit" class="button primary" type="submit">Найти фильмы</button></div>
+    </form>
+    <div id="api-recommend-progress" class="recommend-progress hidden" role="status" aria-live="polite">
+      <div class="operation-progress-head"><button id="recommend-stop" class="mini-button operation-stop hidden" type="button" data-stop-operation="recommendation">Стоп</button></div>
+      <div id="api-recommend-progress-stages"></div>
+    </div>
+    <p id="backlog-recommend-warning" class="notice warning hidden"></p>
+    <section id="backlog-recommend-result" class="llm-modal-result hidden">
+      <div class="section-bar compact"><div><p id="backlog-recommend-result-source" class="eyebrow">Codex + TMDB + OMDb + Кинопоиск</p><h2>Рекомендации</h2></div><div class="section-actions"><button id="open-llm-raw-response" class="mini-button hidden" type="button" data-open-llm-raw-response>Сырой ответ модели</button><span id="backlog-recommend-model" class="api-badge"></span><button class="icon-button result-size-toggle" type="button" data-result-size-toggle="backlog-recommend-dialog" title="Увеличить таблицу" aria-label="Увеличить таблицу" aria-pressed="false"><svg class="action-icon" viewBox="0 0 24 24" aria-hidden="true"><path d="M9 3H3v6M15 3h6v6M21 15v6h-6M9 21H3v-6"/></svg></button></div></div>
+      <div class="notice recommendation-summary-row"><span id="backlog-recommend-message"></span><button id="open-filtered-reasons" class="mini-button hidden" type="button" data-open-filtered-reasons>Подробнее</button></div>
+      <div class="table-wrap"><table class="movie-table llm-recommend-table"><thead id="backlog-recommend-head"><tr>
+        <th>Название</th><th>Дата выхода</th><th>Режиссёр</th><th>IMDb / КП</th><th>Страны</th><th>Жанр</th><th>Ключевые персоны</th><th>Заметка</th><th>Link</th><th>Действия</th>
+      </tr></thead><tbody id="backlog-recommend-body"></tbody></table></div>
+      <section id="backlog-filtered-result" class="filtered-recommendations hidden">
+        <h3>Не прошли фильтрацию</h3>
+        <div class="table-wrap"><table class="movie-table llm-recommend-table"><thead id="backlog-filtered-head"></thead><tbody id="backlog-filtered-body"></tbody></table></div>
+      </section>
+    </section>
+  </dialog>
+
+  <dialog id="filtered-reasons-dialog" class="filtered-reasons-dialog">
+    <div class="dialog-head"><div><p class="eyebrow">Результаты проверки</p><h2 id="filtered-reasons-title">Не прошли фильтрацию</h2></div><button class="dialog-close" type="button" data-close-dialog="filtered-reasons-dialog">×</button></div>
+    <ul id="backlog-filtered-summary" class="filtered-recommend-summary"></ul>
+    <div class="dialog-actions"><button class="button" type="button" data-close-dialog="filtered-reasons-dialog">Закрыть</button></div>
+  </dialog>
+
+  <dialog id="llm-raw-response-dialog" class="llm-raw-response-dialog">
+    <div class="dialog-head"><div><p class="eyebrow">Codex SDK · до обработки</p><h2>Сырой ответ модели</h2></div><button class="dialog-close" type="button" data-close-dialog="llm-raw-response-dialog">×</button></div>
+    <pre id="llm-raw-response-output" class="llm-raw-response-output"></pre>
+    <div class="dialog-actions"><button class="button" type="button" data-close-dialog="llm-raw-response-dialog">Закрыть</button></div>
+  </dialog>
+
+  <dialog id="people-recommend-dialog" class="recommend-dialog people-recommend-dialog">
+    <div class="dialog-head"><div><p class="eyebrow">Codex · персональный подбор</p><h2 id="people-recommend-title">Порекомендовать персону</h2></div><button class="dialog-close" type="button" data-close-dialog="people-recommend-dialog">×</button></div>
+    <form id="people-recommend-form">
+      <div class="recommend-modal-filters people-recommend-filters">
+        <fieldset id="people-recommend-role-field" class="people-recommend-role-field">
+          <legend>Кого рекомендовать</legend>
+          <div id="people-recommend-role-switch" class="mode-switch" role="radiogroup" aria-label="Тип рекомендуемых персон">
+            <button class="active" type="button" role="radio" aria-checked="true" data-people-recommend-role="director">Режиссёров</button>
+            <button type="button" role="radio" aria-checked="false" data-people-recommend-role="actor">Актёров</button>
+          </div>
+          <input id="people-recommend-role" name="role" type="hidden" value="director">
+        </fieldset>
+        <label id="people-recommend-context-limit-field"><span id="people-recommend-context-limit-label">Макс. любимых режиссёров в контексте</span><input id="people-recommend-context-limit" name="people_sample_size" type="number" min="0" value="0" required></label>
+        <label>Макс. рекомендаций<input name="limit" type="number" min="1" max="20" value="5" required></label>
+      </div>
+      <label class="recommend-prompt-label">Свободный запрос<textarea name="prompt" rows="7" maxlength="8000" placeholder="Например: порекомендуй современных европейских режиссёров с необычным визуальным стилем"></textarea></label>
+      <p id="people-recommend-context" class="recommend-context-note">В системный промпт автоматически добавятся все уже добавленные персоны, включая корзину.</p>
+      <p id="people-recommend-error" class="error"></p>
+      <div class="dialog-actions"><span id="people-recommend-provider" class="api-badge">Codex SDK</span><button id="people-recommend-submit" class="button primary" type="submit">Порекомендовать</button></div>
+    </form>
+    <div id="people-recommend-progress" class="recommend-progress hidden" role="status" aria-live="polite"><div class="operation-progress-head"><button id="people-recommend-stop" class="mini-button operation-stop hidden" type="button" data-stop-operation="people">Стоп</button></div><div id="people-recommend-progress-stages"></div></div>
+    <section id="people-recommend-result" class="llm-modal-result hidden">
+      <div class="section-bar compact"><div><p id="people-recommend-result-source" class="eyebrow">Codex + TMDB</p><h2>Рекомендации</h2></div><span id="people-recommend-model" class="api-badge"></span></div>
+      <p id="people-recommend-message" class="notice"></p>
+      <div class="table-wrap"><table class="people-table people-recommend-table"><thead><tr><th>Фото</th><th>Имя</th><th>Тип</th><th>Почему подходит</th><th></th></tr></thead><tbody id="people-recommend-body"></tbody></table></div>
+    </section>
+  </dialog>
+
+  <div id="toast" role="status" aria-live="polite"></div>
+  <script src="/app.js" defer></script>
+</body>
+</html>

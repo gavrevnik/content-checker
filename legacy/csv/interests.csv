@@ -1,0 +1,110 @@
+id,content_type,role,name_original,name_ru,provider,external_id,active,notes
+movie-person-001,movie,actor,Joaquin Phoenix,Joaquin Phoenix,tmdb,73421,true,Migrated from favorite.md/checker.ipynb/lib_list_2.md
+movie-person-002,movie,actor,Colin Farrell,Colin Farrell,tmdb,72466,true,Migrated from favorite.md/checker.ipynb/lib_list_2.md
+movie-person-003,movie,actor,Leonardo DiCaprio,Leonardo DiCaprio,tmdb,6193,true,Migrated from favorite.md/checker.ipynb/lib_list_2.md
+movie-person-004,movie,actor,Javier Bardem,Javier Bardem,tmdb,3810,true,Migrated from favorite.md/checker.ipynb/lib_list_2.md
+movie-person-005,movie,actor,Anthony Hopkins,Anthony Hopkins,tmdb,4173,true,Migrated from favorite.md/checker.ipynb/lib_list_2.md
+movie-person-006,movie,actor,Brad Pitt,Brad Pitt,tmdb,287,true,Migrated from favorite.md/checker.ipynb/lib_list_2.md
+movie-person-007,movie,actor,Antonio Banderas,Antonio Banderas,tmdb,3131,true,Migrated from favorite.md/checker.ipynb/lib_list_2.md
+movie-person-008,movie,actor,Matthew McConaughey,Matthew McConaughey,tmdb,10297,true,Migrated from favorite.md/checker.ipynb/lib_list_2.md
+movie-person-009,movie,actor,Steve Buscemi,Steve Buscemi,tmdb,884,true,Migrated from favorite.md/checker.ipynb/lib_list_2.md
+movie-person-010,movie,actor,Tim Roth,Tim Roth,tmdb,3129,true,Migrated from favorite.md/checker.ipynb/lib_list_2.md
+movie-person-011,movie,actor,Mads Mikkelsen,Mads Mikkelsen,tmdb,1019,true,Migrated from favorite.md/checker.ipynb/lib_list_2.md
+movie-person-012,movie,actor,Scarlett Johansson,Scarlett Johansson,tmdb,1245,true,Migrated from favorite.md/checker.ipynb/lib_list_2.md
+movie-person-013,movie,actor,Til Schweiger,Til Schweiger,tmdb,1844,true,Migrated from favorite.md/checker.ipynb/lib_list_2.md
+movie-person-014,movie,actor,George Clooney,George Clooney,tmdb,1461,true,Migrated from favorite.md/checker.ipynb/lib_list_2.md
+movie-person-015,movie,actor,Tom Hanks,Tom Hanks,tmdb,31,true,Migrated from favorite.md/checker.ipynb/lib_list_2.md
+movie-person-016,movie,actor,Robert De Niro,Robert De Niro,tmdb,380,true,Migrated from favorite.md/checker.ipynb/lib_list_2.md
+movie-person-017,movie,actor,Adrien Brody,Adrien Brody,tmdb,3490,true,Migrated from favorite.md/checker.ipynb/lib_list_2.md
+movie-person-018,movie,actor,Matt Damon,Matt Damon,tmdb,1892,true,Migrated from favorite.md/checker.ipynb/lib_list_2.md
+movie-person-019,movie,actor,Edward Norton,Edward Norton,tmdb,819,true,Migrated from favorite.md/checker.ipynb/lib_list_2.md
+movie-person-020,movie,actor,Robert Pattinson,Robert Pattinson,tmdb,11288,true,Migrated from favorite.md/checker.ipynb/lib_list_2.md
+movie-person-021,movie,actor,Jude Law,Jude Law,tmdb,9642,true,Migrated from favorite.md/checker.ipynb/lib_list_2.md
+movie-person-022,movie,actor,Cillian Murphy,Cillian Murphy,tmdb,2037,true,Migrated from favorite.md/checker.ipynb/lib_list_2.md
+movie-person-023,movie,actor,Benicio Del Toro,Benicio Del Toro,tmdb,1121,true,Migrated from favorite.md/checker.ipynb/lib_list_2.md
+movie-person-024,movie,actor,Timothée Chalamet,Timothée Chalamet,tmdb,1190668,true,Migrated from favorite.md/checker.ipynb/lib_list_2.md
+movie-person-025,movie,actor,Christian Bale,Christian Bale,tmdb,3894,true,Migrated from favorite.md/checker.ipynb/lib_list_2.md
+movie-person-026,movie,actor,Adam Driver,Adam Driver,tmdb,1023139,true,Migrated from favorite.md/checker.ipynb/lib_list_2.md
+movie-person-027,movie,actor,Jake Gyllenhaal,Jake Gyllenhaal,tmdb,131,true,Migrated from favorite.md/checker.ipynb/lib_list_2.md
+movie-person-028,movie,actor,Willem Dafoe,Willem Dafoe,tmdb,5293,true,Migrated from favorite.md/checker.ipynb/lib_list_2.md
+movie-person-029,movie,actor,Paul Mescal,Paul Mescal,tmdb,2590209,true,Migrated from favorite.md/checker.ipynb/lib_list_2.md
+movie-person-030,movie,actor,Michael Fassbender,Michael Fassbender,tmdb,17288,true,Migrated from favorite.md/checker.ipynb/lib_list_2.md
+movie-person-031,movie,actor,Oscar Isaac,Oscar Isaac,tmdb,25072,true,Migrated from favorite.md/checker.ipynb/lib_list_2.md
+movie-person-032,movie,actor,Barry Keoghan,Barry Keoghan,tmdb,1290466,true,Migrated from favorite.md/checker.ipynb/lib_list_2.md
+movie-person-033,movie,actor,Jesse Plemons,Jesse Plemons,tmdb,40685,true,Migrated from favorite.md/checker.ipynb/lib_list_2.md
+movie-person-034,movie,actor,Tom Hardy,Tom Hardy,tmdb,2524,true,Migrated from favorite.md/checker.ipynb/lib_list_2.md
+movie-person-035,movie,actor,Nicolas Cage,Nicolas Cage,tmdb,2963,true,Migrated from favorite.md/checker.ipynb/lib_list_2.md
+movie-person-036,movie,director,Quentin Tarantino,Quentin Tarantino,tmdb,138,true,Migrated from favorite.md/checker.ipynb/lib_list_2.md
+movie-person-037,movie,director,David Fincher,David Fincher,tmdb,7467,true,Migrated from favorite.md/checker.ipynb/lib_list_2.md
+movie-person-038,movie,director,Jim Jarmusch,Jim Jarmusch,tmdb,4429,true,Migrated from favorite.md/checker.ipynb/lib_list_2.md
+movie-person-039,movie,director,Guy Ritchie,Guy Ritchie,tmdb,956,true,Migrated from favorite.md/checker.ipynb/lib_list_2.md
+movie-person-040,movie,director,Christopher Nolan,Christopher Nolan,tmdb,525,true,Migrated from favorite.md/checker.ipynb/lib_list_2.md
+movie-person-041,movie,director,Darren Aronofsky,Darren Aronofsky,tmdb,6431,true,Migrated from favorite.md/checker.ipynb/lib_list_2.md
+movie-person-042,movie,director,Martin McDonagh,Martin McDonagh,tmdb,54472,true,Migrated from favorite.md/checker.ipynb/lib_list_2.md
+movie-person-043,movie,director,Pedro Almodóvar,Pedro Almodóvar,tmdb,309,true,Migrated from favorite.md/checker.ipynb/lib_list_2.md
+movie-person-044,movie,director,Paolo Sorrentino,Paolo Sorrentino,tmdb,56194,true,Migrated from favorite.md/checker.ipynb/lib_list_2.md
+movie-person-045,movie,director,Cristian Mungiu,Cristian Mungiu,tmdb,20657,true,Migrated from favorite.md/checker.ipynb/lib_list_2.md
+movie-person-046,movie,director,Yorgos Lanthimos,Yorgos Lanthimos,tmdb,122423,true,Migrated from favorite.md/checker.ipynb/lib_list_2.md
+movie-person-047,movie,director,Bong Joon-ho,Bong Joon-ho,tmdb,21684,true,Migrated from favorite.md/checker.ipynb/lib_list_2.md
+movie-person-048,movie,director,Lars von Trier,Lars von Trier,tmdb,42,true,Migrated from favorite.md/checker.ipynb/lib_list_2.md
+movie-person-049,movie,director,Woody Allen,Woody Allen,tmdb,1243,true,Migrated from favorite.md/checker.ipynb/lib_list_2.md
+movie-person-050,movie,director,Denis Villeneuve,Denis Villeneuve,tmdb,137427,true,Migrated from favorite.md/checker.ipynb/lib_list_2.md
+movie-person-051,movie,director,Wes Anderson,Wes Anderson,tmdb,5655,true,Migrated from favorite.md/checker.ipynb/lib_list_2.md
+movie-person-052,movie,director,Paul Thomas Anderson,Paul Thomas Anderson,tmdb,3223,true,Migrated from favorite.md/checker.ipynb/lib_list_2.md
+movie-person-053,movie,director,Robert Eggers,Robert Eggers,tmdb,1313360,true,Migrated from favorite.md/checker.ipynb/lib_list_2.md
+movie-person-054,movie,director,Ari Aster,Ari Aster,tmdb,1030513,true,Migrated from favorite.md/checker.ipynb/lib_list_2.md
+movie-person-055,movie,director,Park Chan-wook,Park Chan-wook,tmdb,12453,true,Migrated from favorite.md/checker.ipynb/lib_list_2.md
+movie-person-056,movie,director,Jonathan Glazer,Jonathan Glazer,tmdb,53517,true,Migrated from favorite.md/checker.ipynb/lib_list_2.md
+movie-person-057,movie,director,Ruben Östlund,Ruben Östlund,tmdb,76043,true,Migrated from favorite.md/checker.ipynb/lib_list_2.md
+movie-person-058,movie,director,Gaspar Noé,Gaspar Noé,tmdb,2617,true,Migrated from favorite.md/checker.ipynb/lib_list_2.md
+movie-person-059,movie,director,Nicolas Winding Refn,Nicolas Winding Refn,tmdb,11252,true,Migrated from favorite.md/checker.ipynb/lib_list_2.md
+movie-person-060,movie,director,James Cameron,James Cameron,tmdb,2710,true,Migrated from favorite.md/checker.ipynb/lib_list_2.md
+movie-person-061,movie,director,Wim Wenders,Wim Wenders,tmdb,5652,true,Migrated from favorite.md/checker.ipynb/lib_list_2.md
+movie-person-062,movie,director,Bennett Miller,Bennett Miller,tmdb,12707,true,Migrated from favorite.md/checker.ipynb/lib_list_2.md
+movie-person-063,movie,director,Hayao Miyazaki,Hayao Miyazaki,tmdb,608,true,Migrated from favorite.md/checker.ipynb/lib_list_2.md
+music-artist-001,music,artist,HÆLOS,HÆLOS,spotify,132sZpCaM8ie6byAEcOcRs,true,Migrated from the Spotify draft in checker.ipynb; API wiring intentionally remains legacy
+music-artist-002,music,artist,Marilyn Manson,Marilyn Manson,spotify,2VYQTNDsvvKN9wmU5W7xpj,true,Migrated from the Spotify draft in checker.ipynb; API wiring intentionally remains legacy
+music-artist-003,music,artist,Arctic Monkeys,Arctic Monkeys,spotify,7Ln80lUS6He07XvHI8qqHH,true,Migrated from the Spotify draft in checker.ipynb; API wiring intentionally remains legacy
+music-artist-004,music,artist,Nightwish,Nightwish,spotify,2NPduAUeLVsfIauhRwuft1,true,Migrated from the Spotify draft in checker.ipynb; API wiring intentionally remains legacy
+music-artist-005,music,artist,Hurts,Hurts,spotify,3w4VAlllkAWI6m0AV0Gn6a,true,Migrated from the Spotify draft in checker.ipynb; API wiring intentionally remains legacy
+music-artist-006,music,artist,AWOLNATION,AWOLNATION,spotify,4njdEjTnLfcGImKZu1iSrz,true,Migrated from the Spotify draft in checker.ipynb; API wiring intentionally remains legacy
+music-artist-007,music,artist,London Grammar,London Grammar,spotify,3Bd1cgCjtCI32PYvDC3ynO,true,Migrated from the Spotify draft in checker.ipynb; API wiring intentionally remains legacy
+music-artist-008,music,artist,alt-J,alt-J,spotify,3XHO7cRUPCLOr6jwp8vsx5,true,Migrated from the Spotify draft in checker.ipynb; API wiring intentionally remains legacy
+music-artist-009,music,artist,Lorde,Lorde,spotify,163tK9Wjr9P9DmM0AVK7lm,true,Migrated from the Spotify draft in checker.ipynb; API wiring intentionally remains legacy
+music-artist-010,music,artist,The xx,The xx,spotify,3iOvXCl6edW5Um0fXEBRXy,true,Migrated from the Spotify draft in checker.ipynb; API wiring intentionally remains legacy
+music-artist-011,music,artist,Thirty Seconds to Mars,Thirty Seconds to Mars,spotify,0RqtSIYZmd4fiBKVFqyIqD,true,Migrated from the Spotify draft in checker.ipynb; API wiring intentionally remains legacy
+music-artist-012,music,artist,OneRepublic,OneRepublic,spotify,5Pwc4xIPtQLFEnJriah9Y,true,Migrated from the Spotify draft in checker.ipynb; API wiring intentionally remains legacy
+music-artist-013,music,artist,AURORA,AURORA,spotify,1WgXqy2Dd70QQOU7Ay074N,true,Migrated from the Spotify draft in checker.ipynb; API wiring intentionally remains legacy
+music-artist-014,music,artist,Radiohead,Radiohead,spotify,4Z8W4fKeB5YxbusRsdQVPb,true,Migrated from the Spotify draft in checker.ipynb; API wiring intentionally remains legacy
+music-artist-015,music,artist,Serj Tankian,Serj Tankian,spotify,0BEI7i5sgUuivcfwXLzFmM,true,Migrated from the Spotify draft in checker.ipynb; API wiring intentionally remains legacy
+music-artist-016,music,artist,SVRCINA,SVRCINA,spotify,3wRt3iJpZDOg73CTUkfv5C,true,Migrated from the Spotify draft in checker.ipynb; API wiring intentionally remains legacy
+music-artist-017,music,artist,Iron Maiden,Iron Maiden,spotify,6mdiAmATAx73kdxrNrnlao,true,Migrated from the Spotify draft in checker.ipynb; API wiring intentionally remains legacy
+music-artist-018,music,artist,Metallica,Metallica,spotify,2ye2Wgw4gimLv2eAKyk1NB,true,Migrated from the Spotify draft in checker.ipynb; API wiring intentionally remains legacy
+music-artist-019,music,artist,Florence + The Machine,Florence + The Machine,spotify,1moxjboGR7GNWYIMWsRjgG,true,Migrated from the Spotify draft in checker.ipynb; API wiring intentionally remains legacy
+music-artist-020,music,artist,Poets of the Fall,Poets of the Fall,spotify,1AZ30JnvQU1pbX6sbRE0Yn,true,Migrated from the Spotify draft in checker.ipynb; API wiring intentionally remains legacy
+music-artist-021,music,artist,Kalandra,Kalandra,spotify,2N0vFuOoMtAQfBmhsRo24e,true,Migrated from the Spotify draft in checker.ipynb; API wiring intentionally remains legacy
+music-artist-022,music,artist,Bring Me the Horizon,Bring Me the Horizon,spotify,1Ffb6ejR6Fe5IamqA5oRUF,true,Migrated from the Spotify draft in checker.ipynb; API wiring intentionally remains legacy
+music-artist-023,music,artist,Lana Del Rey,Lana Del Rey,spotify,00FQb4jTyendYWaN8pK0wa,true,Migrated from the Spotify draft in checker.ipynb; API wiring intentionally remains legacy
+music-artist-024,music,artist,Stone Sour,Stone Sour,spotify,49qiE8dj4JuNdpYGRPdKbF,true,Migrated from the Spotify draft in checker.ipynb; API wiring intentionally remains legacy
+music-artist-025,music,artist,Rammstein,Rammstein,spotify,6wWVKhxIU2cEi0K81v7HvP,true,Migrated from the Spotify draft in checker.ipynb; API wiring intentionally remains legacy
+music-artist-026,music,artist,Evanescence,Evanescence,spotify,5nGIFgo0shDenQYSE0Sn7c,true,Migrated from the Spotify draft in checker.ipynb; API wiring intentionally remains legacy
+music-artist-027,music,artist,Linkin Park,Linkin Park,spotify,6XyY86QOPPrYVGvF9ch6wz,true,Migrated from the Spotify draft in checker.ipynb; API wiring intentionally remains legacy
+music-artist-028,music,artist,James Blake,James Blake,spotify,53KwLdlmrlCelAZMaLVZqU,true,Migrated from the Spotify draft in checker.ipynb; API wiring intentionally remains legacy
+music-artist-029,music,artist,Massive Attack,Massive Attack,spotify,6FXMGgJwohJLUSr5nVlf9X,true,Migrated from the Spotify draft in checker.ipynb; API wiring intentionally remains legacy
+music-artist-030,music,artist,Portishead,Portishead,spotify,6nxDkvGl2oyp6XpSFFZ89s,true,Migrated from the Spotify draft in checker.ipynb; API wiring intentionally remains legacy
+music-artist-031,music,artist,Archive,Archive,spotify,1YSI7NofR3G6oM07i31K09,true,Migrated from the Spotify draft in checker.ipynb; API wiring intentionally remains legacy
+music-artist-032,music,artist,Woodkid,Woodkid,spotify,2yIat0oYv4pY6CFrAByV7p,true,Migrated from the Spotify draft in checker.ipynb; API wiring intentionally remains legacy
+music-artist-033,music,artist,Sevdaliza,Sevdaliza,spotify,56Y9pUv2989SUnP7fX8S7G,true,Migrated from the Spotify draft in checker.ipynb; API wiring intentionally remains legacy
+music-artist-034,music,artist,Son Lux,Son Lux,spotify,4m66TCOBeUsh9Y679q9Y6Y,true,Migrated from the Spotify draft in checker.ipynb; API wiring intentionally remains legacy
+music-artist-035,music,artist,Muse,Muse,spotify,12ChZ9vBvYIiAFMG00pY9O,true,Migrated from the Spotify draft in checker.ipynb; API wiring intentionally remains legacy
+music-artist-036,music,artist,Tame Impala,Tame Impala,spotify,5u7v98ib77oUOYOBrvGrge,true,Migrated from the Spotify draft in checker.ipynb; API wiring intentionally remains legacy
+music-artist-037,music,artist,CHVRCHES,CHVRCHES,spotify,3C1SndVvYvRw6mCGO0mZrm,true,Migrated from the Spotify draft in checker.ipynb; API wiring intentionally remains legacy
+music-artist-038,music,artist,System of a Down,System of a Down,spotify,5eHT9Un6B3p6vAV8z6Zq9s,true,Migrated from the Spotify draft in checker.ipynb; API wiring intentionally remains legacy
+music-artist-039,music,artist,Slipknot,Slipknot,spotify,05fGUMSTnwsYgiZpHvsqtM,true,Migrated from the Spotify draft in checker.ipynb; API wiring intentionally remains legacy
+music-artist-040,music,artist,Deftones,Deftones,spotify,6Ghvu1oVhOSpMB3pYvYpS4,true,Migrated from the Spotify draft in checker.ipynb; API wiring intentionally remains legacy
+music-artist-041,music,artist,Within Temptation,Within Temptation,spotify,3Y7XIsS9pZ9oKt899Y6pS4,true,Migrated from the Spotify draft in checker.ipynb; API wiring intentionally remains legacy
+music-artist-042,music,artist,Ghost,Ghost,spotify,1mvvUvBTvof9S87vC9vLYm,true,Migrated from the Spotify draft in checker.ipynb; API wiring intentionally remains legacy
+music-artist-043,music,artist,Eivør,Eivør,spotify,1S9SreA90qV9xQZ6Yq6Z7G,true,Migrated from the Spotify draft in checker.ipynb; API wiring intentionally remains legacy
+music-artist-044,music,artist,Wardruna,Wardruna,spotify,0S0vWE7riWyBrU198vU9Ay,true,Migrated from the Spotify draft in checker.ipynb; API wiring intentionally remains legacy
+music-artist-045,music,artist,Heilung,Heilung,spotify,7hy0t94uMAnO989OpgXpS4,true,Migrated from the Spotify draft in checker.ipynb; API wiring intentionally remains legacy
+music-artist-046,music,artist,Chelsea Wolfe,Chelsea Wolfe,spotify,7S9SreA90qV9xQZ6Yq6Z7G,true,Migrated from the Spotify draft in checker.ipynb; API wiring intentionally remains legacy

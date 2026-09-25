@@ -1,0 +1,24 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "type": "object",
+  "additionalProperties": false,
+  "properties": {
+    "albums": {
+      "type": "array",
+      "minItems": 0,
+      "maxItems": 20,
+      "items": {
+        "type": "object",
+        "additionalProperties": false,
+        "properties": {
+          "title": {"type": "string", "minLength": 1},
+          "artist": {"type": "string", "minLength": 1},
+          "year": {"type": "integer", "minimum": 1900, "maximum": 2100},
+          "comment": {"type": "string", "minLength": 1}
+        },
+        "required": ["title", "artist", "year", "comment"]
+      }
+    }
+  },
+  "required": ["albums"]
+}

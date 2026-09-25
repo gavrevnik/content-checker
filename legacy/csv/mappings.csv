@@ -1,0 +1,11 @@
+content_type,library_id,provider,external_id,canonical_title_original,canonical_title_ru,alias,alias_language,notes
+movie,movie-037,legacy,,Platoon,Взвод,взвод,ru,Normalized from legacy notes
+movie,movie-038,legacy,,Everything Everywhere All at Once,Всё везде и сразу,все везде и сразу,ru,Normalized from legacy notes
+movie,movie-042,legacy,,Dead Poets Society,Общество мёртвых поэтов,общ мертвых поэтов,ru,Normalized from legacy notes
+movie,movie-043,legacy,,The Exorcist,Изгоняющий дьявола,exorcist,ru,Normalized from legacy notes
+movie,movie-053,legacy,,The Island of Dr. Moreau,Остров доктора Моро,остров доктора моро,ru,Normalized from legacy notes
+movie,movie-055,legacy,,Vertigo,Головокружение,хичкок - головокружение,ru,Normalized from legacy notes
+movie,movie-057,legacy,,Dogtooth,Клык,клык - лантимос,ru,Normalized from legacy notes
+movie,movie-061,legacy,,To Die For,Умереть во имя,гас ван сент - умереть за,ru,Normalized from legacy notes
+movie,item-938acf967d87,tmdb,1088548,Amarga Navidad,Горькое Рождество,,,Added automatically
+movie,item-70be324809fc,tmdb,83533,Avatar: Fire and Ash,Аватар: Пламя и пепел,,,Added automatically

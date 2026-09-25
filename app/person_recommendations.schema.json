@@ -1,0 +1,24 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "type": "object",
+  "additionalProperties": false,
+  "properties": {
+    "people": {
+      "type": "array",
+      "minItems": 0,
+      "maxItems": 10,
+      "items": {
+        "type": "object",
+        "additionalProperties": false,
+        "properties": {
+          "name_original": {"type": "string", "minLength": 1},
+          "name_ru": {"type": "string", "minLength": 1},
+          "role": {"type": "string", "enum": ["actor", "director", "artist"]},
+          "comment": {"type": "string", "minLength": 1}
+        },
+        "required": ["name_original", "name_ru", "role", "comment"]
+      }
+    }
+  },
+  "required": ["people"]
+}

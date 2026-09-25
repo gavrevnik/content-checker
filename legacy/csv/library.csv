@@ -1,0 +1,113 @@
+id,content_type,title_ru,title_original,status,reaction,year,creators,participants,genres,duration_minutes,external_rating,external_rating_source,external_id,source,url,location,metadata_json,notes,added_at,consumed_at
+movie-001,movie,Дюна: Часть вторая,Dune: Part Two,consumed,like,2024,,,,,,,,already_watched.md,,,"{""migrated_from"":""already_watched.md""}",,2026-08-16,2026-08-16
+movie-002,movie,Оппенгеймер,Oppenheimer,consumed,,2023,,,,,,,,already_watched.md,,,"{""migrated_from"":""already_watched.md""}",,2026-08-16,2026-08-16
+movie-003,movie,Дюна,Dune,consumed,,2021,,,,,,,,already_watched.md,,,"{""migrated_from"":""already_watched.md""}",,2026-08-16,2026-08-16
+movie-004,movie,Бедные-несчастные,Poor Things,consumed,,2023,,,,,,,,already_watched.md,,,"{""migrated_from"":""already_watched.md""}",,2026-08-16,2026-08-16
+movie-005,movie,Ещё по одной,Another Round,consumed,like,2020,,,,,,,,already_watched.md,,,"{""migrated_from"":""already_watched.md""}",,2026-08-16,2026-08-16
+movie-006,movie,Убийцы цветочной луны,Killers of the Flower Moon,consumed,,2023,,,,,,,,already_watched.md,,,"{""migrated_from"":""already_watched.md""}",,2026-08-16,2026-08-16
+movie-007,movie,Боб Дилан: Никому не известный,A Complete Unknown,consumed,,2024,,,,,,,,already_watched.md,,,"{""migrated_from"":""already_watched.md""}",,2026-08-16,2026-08-16
+movie-008,movie,Довод,Tenet,consumed,,2020,,,,,,,,already_watched.md,,,"{""migrated_from"":""already_watched.md""}",,2026-08-16,2026-08-16
+movie-009,movie,Не смотрите наверх,Don't Look Up,consumed,,2021,,,,,,,,already_watched.md,,,"{""migrated_from"":""already_watched.md""}",,2026-08-16,2026-08-16
+movie-010,movie,Битва за битвой,One Battle After Another,consumed,,2025,,,,,,,,already_watched.md,,,"{""migrated_from"":""already_watched.md""}",,2026-08-16,2026-08-16
+movie-011,movie,F1,F1: The Movie,consumed,,2025,,,,,,,,already_watched.md,,,"{""migrated_from"":""already_watched.md""}",,2026-08-16,2026-08-16
+movie-012,movie,Эддингтон,Eddington,consumed,,2025,,,,,,,,already_watched.md,,,"{""migrated_from"":""already_watched.md""}",,2026-08-16,2026-08-16
+movie-013,movie,Быстрее пули,Bullet Train,consumed,,2022,,,,,,,,already_watched.md,,,"{""migrated_from"":""already_watched.md""}",,2026-08-16,2026-08-16
+movie-014,movie,Убийца,The Killer,consumed,,2023,,,,,,,,already_watched.md,,,"{""migrated_from"":""already_watched.md""}",,2026-08-16,2026-08-16
+movie-015,movie,Микки 17,Mickey 17,consumed,,2025,,,,,,,,already_watched.md,,,"{""migrated_from"":""already_watched.md""}",,2026-08-16,2026-08-16
+movie-016,movie,Виды доброты,Kinds of Kindness,consumed,,2024,,,,,,,,already_watched.md,,,"{""migrated_from"":""already_watched.md""}",,2026-08-16,2026-08-16
+movie-017,movie,Барби,Barbie,consumed,,2023,,,,,,,,already_watched.md,,,"{""migrated_from"":""already_watched.md""}",,2026-08-16,2026-08-16
+movie-018,movie,Все страхи Бо,Beau Is Afraid,consumed,,2023,,,,,,,,already_watched.md,,,"{""migrated_from"":""already_watched.md""}",,2026-08-16,2026-08-16
+movie-019,movie,Бэтмен,The Batman,consumed,,2022,,,,,,,,already_watched.md,,,"{""migrated_from"":""already_watched.md""}",,2026-08-16,2026-08-16
+movie-020,movie,Банши Инишерина,The Banshees of Inisherin,consumed,,2022,,,,,,,,already_watched.md,,,"{""migrated_from"":""already_watched.md""}",,2026-08-16,2026-08-16
+movie-021,movie,Лига справедливости Зака Снайдера,Zack Snyder's Justice League,consumed,,2021,,,,,,,,already_watched.md,,,"{""migrated_from"":""already_watched.md""}",,2026-08-16,2026-08-16
+movie-022,movie,Последняя дуэль,The Last Duel,consumed,,2021,,,,,,,,already_watched.md,,,"{""migrated_from"":""already_watched.md""}",,2026-08-16,2026-08-16
+movie-023,movie,Французский вестник,The French Dispatch,consumed,,2021,,,,,,,,already_watched.md,,,"{""migrated_from"":""already_watched.md""}",,2026-08-16,2026-08-16
+movie-024,movie,Гнев человеческий,Wrath of Man,consumed,,2021,,,,,,,,already_watched.md,,,"{""migrated_from"":""already_watched.md""}",,2026-08-16,2026-08-16
+movie-025,movie,Аннетт,Annette,consumed,,2021,,,,,,,,already_watched.md,,,"{""migrated_from"":""already_watched.md""}",,2026-08-16,2026-08-16
+movie-026,movie,Манк,Mank,consumed,,2020,,,,,,,,already_watched.md,,,"{""migrated_from"":""already_watched.md""}",,2026-08-16,2026-08-16
+movie-027,movie,Джентльмены,The Gentlemen,consumed,,2019,,,,,,,,already_watched.md,,,"{""migrated_from"":""already_watched.md""}",,2026-08-16,2026-08-16
+movie-028,movie,Финикийская схема,The Phoenician Scheme,consumed,,2025,,,,,,,,already_watched.md,,,"{""migrated_from"":""already_watched.md""}",,2026-08-16,2026-08-16
+movie-029,movie,Чёрная вдова,Black Widow,consumed,,2021,,,,,,,,already_watched.md,,,"{""migrated_from"":""already_watched.md""}",,2026-08-16,2026-08-16
+movie-030,movie,Бруталист,The Brutalist,consumed,,2024,,,,,,,,already_watched.md,,,"{""migrated_from"":""already_watched.md""}",,2026-08-16,2026-08-16
+movie-031,movie,Анора,Anora,consumed,,2024,,,,,,,,already_watched.md,,,"{""migrated_from"":""already_watched.md""}",,2026-08-16,2026-08-16
+movie-032,movie,Земля кочевников,Nomadland,consumed,,2020,,,,,,,,already_watched.md,,,"{""migrated_from"":""already_watched.md""}",,2026-08-16,2026-08-16
+movie-033,movie,Человек-паук: Нет пути домой,Spider-Man: No Way Home,consumed,,2021,,,,,,,,already_watched.md,,,"{""migrated_from"":""already_watched.md""}",,2026-08-16,2026-08-16
+movie-034,movie,Анатомия падения,Anatomy of a Fall,consumed,,2023,,,,,,,,already_watched.md,,,"{""migrated_from"":""already_watched.md""}",,2026-08-16,2026-08-16
+movie-035,movie,Зона интересов,The Zone of Interest,consumed,,2023,,,,,,,,already_watched.md,,,"{""migrated_from"":""already_watched.md""}",,2026-08-16,2026-08-16
+movie-036,movie,Субстанция,The Substance,consumed,,2024,,,,,,,,already_watched.md,,,"{""migrated_from"":""already_watched.md""}",,2026-08-16,2026-08-16
+movie-037,movie,Взвод,Platoon,consumed,,1986,,,,,,,,lib_list_2.md,,,"{""migrated_from"":""lib_list_2.md""}",,2026-08-16,2026-08-16T19:46:04+00:00
+movie-038,movie,Всё везде и сразу,Everything Everywhere All at Once,backlog,,2022,,,,,,,,lib_list_2.md,,,"{""migrated_from"":""lib_list_2.md""}",Merged duplicate RU/EN entries from lib_list_2.md,2026-08-16,
+movie-039,movie,Чужие,Aliens,backlog,,1986,,,,,,,,lib_list_2.md,,,"{""migrated_from"":""lib_list_2.md""}",James Cameron section,2026-08-16,
+movie-040,movie,Бездна,The Abyss,backlog,,1989,,,,,,,,lib_list_2.md,,,"{""migrated_from"":""lib_list_2.md""}",James Cameron section,2026-08-16,
+movie-041,movie,Робокоп,RoboCop,backlog,,1987,,,,,,,,lib_list_2.md,,,"{""migrated_from"":""lib_list_2.md""}",,2026-08-16,
+movie-042,movie,Общество мёртвых поэтов,Dead Poets Society,backlog,,1989,,,,,,,,lib_list_2.md,,,"{""migrated_from"":""lib_list_2.md""}",Legacy typo normalized,2026-08-16,
+movie-043,movie,Изгоняющий дьявола,The Exorcist,backlog,,1973,,,,,,,,lib_list_2.md,,,"{""migrated_from"":""lib_list_2.md""}",,2026-08-16,
+movie-044,movie,Ансельм. Шум времени,Anselm,backlog,,2023,,,,,,,,lib_list_2.md,,,"{""migrated_from"":""lib_list_2.md""}",,2026-08-16,
+movie-045,movie,Соль Земли,The Salt of the Earth,backlog,,2014,,,,,,,,lib_list_2.md,,,"{""migrated_from"":""lib_list_2.md""}",,2026-08-16,
+movie-046,movie,Падение империи,Civil War,backlog,,2024,,,,,,,,lib_list_2.md,,,"{""migrated_from"":""lib_list_2.md""}",,2026-08-16,
+movie-047,movie,Камон Камон,C'mon C'mon,backlog,,2021,,,,,,,,lib_list_2.md,,,"{""migrated_from"":""lib_list_2.md""}",,2026-08-16,
+movie-048,movie,Аллея кошмаров,Nightmare Alley,backlog,,2021,,,,,,,,lib_list_2.md,,,"{""migrated_from"":""lib_list_2.md""}",,2026-08-16,
+movie-049,movie,Раскопки,The Dig,backlog,,2021,,,,,,,,lib_list_2.md,,,"{""migrated_from"":""lib_list_2.md""}",,2026-08-16,
+movie-050,movie,Солнце моё,Aftersun,backlog,,2022,,,,,,,,lib_list_2.md,,,"{""migrated_from"":""lib_list_2.md""}",,2026-08-16,
+movie-051,movie,"Май, декабрь",May December,backlog,,2023,,,,,,,,lib_list_2.md,,,"{""migrated_from"":""lib_list_2.md""}",,2026-08-16,
+movie-052,movie,Мгла,The Mist,backlog,,2007,,,,,,,,lib_list_2.md,,,"{""migrated_from"":""lib_list_2.md""}",,2026-08-16,
+movie-053,movie,Остров доктора Моро,The Island of Dr. Moreau,backlog,,,,,,,,,,lib_list_2.md,,,"{""migrated_from"":""lib_list_2.md""}",Version/year was not specified in the legacy note,2026-08-16,
+movie-054,movie,Чунгкинский экспресс,Chungking Express,backlog,,1994,,,,,,,,lib_list_2.md,,,"{""migrated_from"":""lib_list_2.md""}",,2026-08-16,
+movie-055,movie,Головокружение,Vertigo,backlog,,1958,,,,,,,,lib_list_2.md,,,"{""migrated_from"":""lib_list_2.md""}",Alfred Hitchcock,2026-08-16,
+movie-056,movie,Древо жизни,The Tree of Life,backlog,,2011,,,,,,,,lib_list_2.md,,,"{""migrated_from"":""lib_list_2.md""}",,2026-08-16,
+movie-057,movie,Клык,Dogtooth,backlog,,2009,,,,,,,,lib_list_2.md,,,"{""migrated_from"":""lib_list_2.md""}",Yorgos Lanthimos,2026-08-16,
+movie-058,movie,Дети небес,Children of Heaven,backlog,,1997,,,,,,,,lib_list_2.md,,,"{""migrated_from"":""lib_list_2.md""}",,2026-08-16,
+movie-059,movie,Лабиринт Фавна,Pan's Labyrinth,backlog,,2006,,,,,,,,lib_list_2.md,,,"{""migrated_from"":""lib_list_2.md""}",,2026-08-16,
+movie-060,movie,Подкидыш,The Foundling,backlog,,1939,,,,,,,,lib_list_2.md,,,"{""migrated_from"":""lib_list_2.md""}",Soviet film,2026-08-16,
+movie-061,movie,Умереть во имя,To Die For,backlog,,1995,,,,,,,,lib_list_2.md,,,"{""migrated_from"":""lib_list_2.md""}",Gus Van Sant,2026-08-16,
+music-001,music,Величайшая любовь,The Greatest Love,dismissed,,,,,,,,,,checker.ipynb,,,"{""migrated_from"":""checker.ipynb""}",Excluded in the legacy Spotify draft; no like/dislike was inferred,2026-08-16,
+music-002,music,Из пустоты,From Zero,dismissed,,,,,,,,,,checker.ipynb,,,"{""migrated_from"":""checker.ipynb""}",Excluded in the legacy Spotify draft; no like/dislike was inferred,2026-08-16,
+music-003,music,Одно убийство без Бога — Глава 1,One Assassination Under God - Chapter 1,dismissed,,,,,,,,,,checker.ipynb,,,"{""migrated_from"":""checker.ipynb""}",Excluded in the legacy Spotify draft; no like/dislike was inferred,2026-08-16,
+music-004,music,Что случилось с сердцем?,What Happened To The Heart?,dismissed,,,,,,,,,,checker.ipynb,,,"{""migrated_from"":""checker.ipynb""}",Excluded in the legacy Spotify draft; no like/dislike was inferred,2026-08-16,
+music-005,music,Из пустоты: акапеллы,From Zero: A Cappellas,dismissed,,,,,,,,,,checker.ipynb,,,"{""migrated_from"":""checker.ipynb""}",Excluded in the legacy Spotify draft; no like/dislike was inferred,2026-08-16,
+music-006,music,Паперкаты: инструменталы,Papercuts: Instrumentals,dismissed,,,,,,,,,,checker.ipynb,,,"{""migrated_from"":""checker.ipynb""}",Excluded in the legacy Spotify draft; no like/dislike was inferred,2026-08-16,
+music-007,music,Призрачная пятёрка,The Phantom Five,dismissed,,,,,,,,,,checker.ipynb,,,"{""migrated_from"":""checker.ipynb""}",Excluded in the legacy Spotify draft; no like/dislike was inferred,2026-08-16,
+music-008,music,1200 ударов в минуту,1200 Beats Per Minute,dismissed,,,,,,,,,,checker.ipynb,,,"{""migrated_from"":""checker.ipynb""}",Excluded in the legacy Spotify draft; no like/dislike was inferred,2026-08-16,
+restaurant-001,restaurant,IDOL bar,IDOL Bar,consumed,like,,,,,,,,,belgrade_restaurants.md,https://g.co/kgs/38pXFM4,"Belgrade, Serbia","{""migrated_from"":""belgrade_restaurants.md""}","бар / ресторан, понравился",2026-08-16,2026-08-16
+restaurant-002,restaurant,June,June,consumed,like,,,,,,,,,belgrade_restaurants.md,https://g.co/kgs/sHUCDhG,"Belgrade, Serbia","{""migrated_from"":""belgrade_restaurants.md""}",современная кухня,2026-08-16,2026-08-16
+restaurant-003,restaurant,Iva Balkan Cuisine,Iva Balkan Cuisine,consumed,like,,,,,,,,,belgrade_restaurants.md,https://g.co/kgs/HQcCxBt,"Belgrade, Serbia","{""migrated_from"":""belgrade_restaurants.md""}",балканская кухня,2026-08-16,2026-08-16
+restaurant-004,restaurant,New Reset,New Reset,consumed,like,,,,,,,,,belgrade_restaurants.md,https://g.co/kgs/DwYb8ZS,"Belgrade, Serbia","{""migrated_from"":""belgrade_restaurants.md""}",современный формат,2026-08-16,2026-08-16
+restaurant-005,restaurant,Good Dumplings,Good Dumplings,consumed,like,,,,,,,,,belgrade_restaurants.md,https://g.co/kgs/YxwUmjV,"Belgrade, Serbia","{""migrated_from"":""belgrade_restaurants.md""}",дамплинги,2026-08-16,2026-08-16
+restaurant-006,restaurant,Šaran,Šaran,consumed,like,,,,,,,,,belgrade_restaurants.md,https://maps.app.goo.gl/7XhU8EZedk9npvnFA,"Belgrade, Serbia","{""migrated_from"":""belgrade_restaurants.md""}",рыбный ресторан,2026-08-16,2026-08-16
+restaurant-007,restaurant,Istok,Istok Vietnamese Restaurant,consumed,like,,,,,,,,,belgrade_restaurants.md,https://maps.app.goo.gl/b37TSpVXfF6EGLb3A,"Belgrade, Serbia","{""migrated_from"":""belgrade_restaurants.md""}",вьетнамская кухня,2026-08-16,2026-08-16
+restaurant-008,restaurant,Kunst Wine Bar,Kunst Wine Bar,consumed,like,,,,,,,,,belgrade_restaurants.md,https://maps.app.goo.gl/hggsA4NZo6dwUE8N7,"Belgrade, Serbia","{""migrated_from"":""belgrade_restaurants.md""}",винный бар,2026-08-16,2026-08-16
+restaurant-009,restaurant,Suvobor,Suvobor,consumed,like,,,,,,,,,belgrade_restaurants.md,https://maps.app.goo.gl/BdhqhVmEyRuSeNYx5,"Belgrade, Serbia","{""migrated_from"":""belgrade_restaurants.md""}",сербская кухня,2026-08-16,2026-08-16
+restaurant-010,restaurant,Карусель,Karusel,consumed,like,,,,,,,,,belgrade_restaurants.md,https://maps.app.goo.gl/myVeT9yw7nh4Dbrt7,"Belgrade, Serbia","{""migrated_from"":""belgrade_restaurants.md""}",ресторан,2026-08-16,2026-08-16
+restaurant-011,restaurant,Process,Process Wine Bar,consumed,like,,,,,,,,,belgrade_restaurants.md,https://maps.app.goo.gl/U8cVKzVx3tY5yBFA6,"Belgrade, Serbia","{""migrated_from"":""belgrade_restaurants.md""}",винный бар,2026-08-16,2026-08-16
+restaurant-012,restaurant,Axiom Bar,Axiom Bar,consumed,like,,,,,,,,,belgrade_restaurants.md,https://maps.app.goo.gl/RdT9rFYa6m8pnT7v6,"Belgrade, Serbia","{""migrated_from"":""belgrade_restaurants.md""}",бар,2026-08-16,2026-08-16
+restaurant-013,restaurant,Кафана Корчагин,Kafana Pavle Korčagin,consumed,like,,,,,,,,,belgrade_restaurants.md,https://maps.app.goo.gl/qp8PtLMzfqWMUxAT7,"Belgrade, Serbia","{""migrated_from"":""belgrade_restaurants.md""}",кафана,2026-08-16,2026-08-16
+restaurant-014,restaurant,Pietra,Pietra Pizza,consumed,like,,,,,,,,,belgrade_restaurants.md,https://maps.app.goo.gl/mxJptVEG9Zo8XQiX9,"Belgrade, Serbia","{""migrated_from"":""belgrade_restaurants.md""}",пицца,2026-08-16,2026-08-16
+restaurant-015,restaurant,Little Bay,Little Bay,consumed,like,,,,,,,,,belgrade_restaurants.md,https://maps.app.goo.gl/drWuDznoT69VFVM28,"Belgrade, Serbia","{""migrated_from"":""belgrade_restaurants.md""}",интерьер + европейская кухня,2026-08-16,2026-08-16
+restaurant-016,restaurant,Thyme,Thyme Street Food,consumed,like,,,,,,,,,belgrade_restaurants.md,https://maps.app.goo.gl/HBiPEMs5WWDXBX8K7,"Belgrade, Serbia","{""migrated_from"":""belgrade_restaurants.md""}",стритфуд,2026-08-16,2026-08-16
+restaurant-017,restaurant,SMASH BURGERS,SMASH BURGERS,consumed,like,,,,,,,,,belgrade_restaurants.md,https://maps.app.goo.gl/oxpgAN6D6spYUHmb9,"Belgrade, Serbia","{""migrated_from"":""belgrade_restaurants.md""}",,2026-08-16,2026-08-16
+restaurant-018,restaurant,Riddle Bar Skadarlija,Riddle Bar Skadarlija,backlog,,,,,Средний сегмент,,,,,belgrade_restaurants.md,https://maps.app.goo.gl/JUbEkKnRbZrqj5m28,"Belgrade, Serbia","{""migrated_from"":""belgrade_restaurants.md""}",коктейльный бар,2026-08-16,
+restaurant-019,restaurant,Fomin Bar,Fomin Bar,backlog,,,,,Средний сегмент,,,,,belgrade_restaurants.md,https://maps.app.goo.gl/RTWk2Cmkhj3DBHap6,"Belgrade, Serbia","{""migrated_from"":""belgrade_restaurants.md""}",бар,2026-08-16,
+restaurant-020,restaurant,Lebanese Pekara,Lebanese Bakery,backlog,,,,,Средний сегмент,,,,,belgrade_restaurants.md,https://maps.app.goo.gl/y4nw7hAciQeNvMHL6,"Belgrade, Serbia","{""migrated_from"":""belgrade_restaurants.md""}",ливанская выпечка,2026-08-16,
+restaurant-021,restaurant,Thai Restaurant,Thai Restaurant,backlog,,,,,Средний сегмент,,,,,belgrade_restaurants.md,https://maps.app.goo.gl/Gz2yyWKcahKVz2QV8,"Belgrade, Serbia","{""migrated_from"":""belgrade_restaurants.md""}",тайская кухня,2026-08-16,
+restaurant-022,restaurant,Royal India,Royal India,backlog,,,,,Средний сегмент,,,,,belgrade_restaurants.md,https://maps.app.goo.gl/4EkQq5F3GgwgH5YBA,"Belgrade, Serbia","{""migrated_from"":""belgrade_restaurants.md""}",индийская кухня,2026-08-16,
+restaurant-023,restaurant,Mezestoran Dvorište,Mezestoran Dvorište,backlog,,,,,Средний сегмент,,,,,belgrade_restaurants.md,https://maps.app.goo.gl/ME9YK4FmpMKPRHdg9,"Belgrade, Serbia","{""migrated_from"":""belgrade_restaurants.md""}","Michelin Recommended, средиземноморская / сербская",2026-08-16,
+restaurant-024,restaurant,Gastro Šor,Gastro Šor,backlog,,,,,Средний сегмент,,,,,belgrade_restaurants.md,https://maps.app.goo.gl/VkPWH9WzDB6E1eGM6,"Belgrade, Serbia","{""migrated_from"":""belgrade_restaurants.md""}",гастробистро,2026-08-16,
+restaurant-025,restaurant,Boem Bar,Boem Bar,backlog,,,,,Средний сегмент,,,,,belgrade_restaurants.md,https://maps.app.goo.gl/Bp5jH69SiP6gaLw38,"Belgrade, Serbia","{""migrated_from"":""belgrade_restaurants.md""}",бар,2026-08-16,
+restaurant-026,restaurant,View Rooftop,View Rooftop,backlog,,,,,Средний сегмент,,,,,belgrade_restaurants.md,https://maps.app.goo.gl/FiEHyVzotjPnQDZt5,"Belgrade, Serbia","{""migrated_from"":""belgrade_restaurants.md""}",вид на Саву,2026-08-16,
+restaurant-027,restaurant,La Rumba,La Rumba,backlog,,,,,Средний сегмент,,,,,belgrade_restaurants.md,https://maps.app.goo.gl/17WhUEcRV8ArjoK37,"Belgrade, Serbia","{""migrated_from"":""belgrade_restaurants.md""}",кубинская кухня,2026-08-16,
+restaurant-028,restaurant,Bosiljak Pizza Napoletana,Bosiljak Pizza Napoletana,backlog,,,,,Средний сегмент,,,,,belgrade_restaurants.md,https://maps.app.goo.gl/4L41WhStnHTqBvEE9,"Belgrade, Serbia","{""migrated_from"":""belgrade_restaurants.md""}",,2026-08-16,
+restaurant-029,restaurant,IbericoWine&food,IbericoWine&food,backlog,,,,,Средний сегмент,,,,,belgrade_restaurants.md,https://maps.app.goo.gl/ZwrGLjZ1i3zWu541A,"Belgrade, Serbia","{""migrated_from"":""belgrade_restaurants.md""}",,2026-08-16,
+restaurant-030,restaurant,La Taqueria,La Taqueria,backlog,,,,,Средний сегмент,,,,,belgrade_restaurants.md,https://maps.app.goo.gl/3nLb2w48SmwP1frf9,"Belgrade, Serbia","{""migrated_from"":""belgrade_restaurants.md""}",,2026-08-16,
+restaurant-031,restaurant,Georgia,Georgia,backlog,,,,,Средний сегмент,,,,,belgrade_restaurants.md,https://maps.app.goo.gl/oG42ME2nDpwPJzom7,"Belgrade, Serbia","{""migrated_from"":""belgrade_restaurants.md""}","- грузинская кухня, земун",2026-08-16,
+restaurant-032,restaurant,Spring Belgrade,Spring Belgrade,backlog,,,,,Средний сегмент,,,,,belgrade_restaurants.md,https://maps.app.goo.gl/Fi4zUqPd2m6EpYDJ8,"Belgrade, Serbia","{""migrated_from"":""belgrade_restaurants.md""}",- китайская кухня,2026-08-16,
+restaurant-033,restaurant,Restoran Hanan,Restoran Hanan,backlog,,,,,Средний сегмент,,,,,belgrade_restaurants.md,https://maps.app.goo.gl/S7jNkr2jFDB19dDw7,"Belgrade, Serbia","{""migrated_from"":""belgrade_restaurants.md""}",- ливанская кухня,2026-08-16,
+restaurant-034,restaurant,Rodizio,Rodizio,backlog,,,,,Средний сегмент,,,,,belgrade_restaurants.md,https://maps.app.goo.gl/ocjnTk5tf6EJBiir8,"Belgrade, Serbia","{""migrated_from"":""belgrade_restaurants.md""}",- бразильский стейк хаус,2026-08-16,
+restaurant-035,restaurant,Legat,Legat 1903,backlog,,,,,Дорогой сегмент,,,,,belgrade_restaurants.md,https://maps.app.goo.gl/whHzZWYY4J7SGB2k7,"Belgrade, Serbia","{""migrated_from"":""belgrade_restaurants.md""}",fine dining,2026-08-16,
+restaurant-036,restaurant,Toro Latin GastroBar,Toro Latin GastroBar,backlog,,,,,Дорогой сегмент,,,,,belgrade_restaurants.md,https://maps.app.goo.gl/ejvaXiGMPY46rFA38,"Belgrade, Serbia","{""migrated_from"":""belgrade_restaurants.md""}",латиноамериканская кухня,2026-08-16,
+restaurant-037,restaurant,Salon 1905,Salon 1905,backlog,,,,,Дорогой сегмент,,,,,belgrade_restaurants.md,https://maps.app.goo.gl/cbzN6aR67D8sQmYZ8,"Belgrade, Serbia","{""migrated_from"":""belgrade_restaurants.md""}","пафосно, высокая кухня",2026-08-16,
+restaurant-038,restaurant,Enso Wine Bar,Enso Wine Bar,backlog,,,,,Дорогой сегмент,,,,,belgrade_restaurants.md,https://maps.app.goo.gl/ZH7oTTdsqass4qnXA,"Belgrade, Serbia","{""migrated_from"":""belgrade_restaurants.md""}",винный бар,2026-08-16,
+restaurant-039,restaurant,Restoran 27,Restoran 27,backlog,,,,,Дорогой сегмент,,,,,belgrade_restaurants.md,https://maps.app.goo.gl/aT8RgdsCko4ezmBv6,"Belgrade, Serbia","{""migrated_from"":""belgrade_restaurants.md""}",,2026-08-16,
+restaurant-040,restaurant,Mandarina Cake Shop,Mandarina Cake Shop,backlog,,,,,Десерты,,,,,belgrade_restaurants.md,https://maps.app.goo.gl/eGFcgMpRpD8FGR9v5,"Belgrade, Serbia","{""migrated_from"":""belgrade_restaurants.md""}",,2026-08-16,
+restaurant-041,restaurant,Salon de thé by Small Tree,Salon de thé by Small Tree,backlog,,,,,Десерты,,,,,belgrade_restaurants.md,https://maps.app.goo.gl/sJoJYfiQTMJPoHCT6,"Belgrade, Serbia","{""migrated_from"":""belgrade_restaurants.md""}",- чайхона красивая,2026-08-16,
+item-938acf967d87,movie,Горькое Рождество,Amarga Navidad,backlog,,2026,Педро Альмодовар,Pedro Almodóvar,драма; комедия,111,6.3,tmdb,1088548,tmdb,https://www.themoviedb.org/movie/1088548,,"{""vote_count"":119}",Recommended by TMDB update,2026-08-16T20:04:22+00:00,
+item-70be324809fc,movie,Аватар: Пламя и пепел,Avatar: Fire and Ash,backlog,,2025,Джеймс Кэмерон,James Cameron,фантастика; приключения; фэнтези,192,7.6,tmdb,83533,tmdb,https://www.themoviedb.org/movie/83533,,"{""vote_count"":4131}",Recommended by TMDB update,2026-08-16T20:19:51+00:00,

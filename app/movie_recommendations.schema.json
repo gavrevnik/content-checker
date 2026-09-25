@@ -1,0 +1,44 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "type": "object",
+  "additionalProperties": false,
+  "properties": {
+    "movies": {
+      "type": "array",
+      "minItems": 0,
+      "maxItems": 20,
+      "items": {
+        "type": "object",
+        "additionalProperties": false,
+        "properties": {
+          "title_ru": {
+            "type": "string",
+            "minLength": 1
+          },
+          "title_original": {
+            "type": "string",
+            "minLength": 1
+          },
+          "year": {
+            "type": "integer",
+            "minimum": 1888,
+            "maximum": 2100
+          },
+          "comment": {
+            "type": "string",
+            "minLength": 1
+          }
+        },
+        "required": [
+          "title_ru",
+          "title_original",
+          "year",
+          "comment"
+        ]
+      }
+    }
+  },
+  "required": [
+    "movies"
+  ]
+}

@@ -1,0 +1,16 @@
+api.py
+/SECRETS
+__pycache__/
+.cache
+.runtime/
+.DS_Store
+.ipynb_checkpoints/
+*.py[cod]
+.env
+.env.*
+!.env.example
+.venv/
+node_modules/
+data/settings.json
+/data/artwork/
+/data/library.sqlite3*
