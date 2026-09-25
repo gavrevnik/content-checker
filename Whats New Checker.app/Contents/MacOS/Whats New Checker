@@ -9,8 +9,9 @@ if [[ -x "${REPO_DIR}/.venv/bin/python" ]]; then
   PYTHON_BIN="${REPO_DIR}/.venv/bin/python"
 fi
 
-URL="http://127.0.0.1:8765"
-HEALTH_URL="${URL}/api/health"
+PUBLIC_URL="http://content-checker.localhost/"
+INTERNAL_URL="http://127.0.0.1:8765"
+HEALTH_URL="${INTERNAL_URL}/api/health"
 RUNTIME_DIR="${REPO_DIR}/.runtime"
 PID_FILE="${RUNTIME_DIR}/server.pid"
 LOG_FILE="${RUNTIME_DIR}/server.log"
@@ -105,7 +106,7 @@ health_payload=$(/usr/bin/curl -fsS --max-time 1 "${HEALTH_URL}" 2>/dev/null || 
 running_application=$(print -r -- "${health_payload}" | "${PYTHON_BIN}" -c 'import json,sys; print(json.load(sys.stdin).get("application", ""))' 2>/dev/null || true)
 running_version=$(print -r -- "${health_payload}" | "${PYTHON_BIN}" -c 'import json,sys; print(json.load(sys.stdin).get("version", ""))' 2>/dev/null || true)
 if [[ "${running_application}" == "${EXPECTED_APPLICATION}" && "${running_version}" == "${EXPECTED_VERSION}" ]]; then
-  /usr/bin/open "${URL}"
+  /usr/bin/open "${PUBLIC_URL}"
 else
   /usr/bin/osascript -e 'display alert "whatsNew" message "Не удалось запустить локальный сервер. Подробности: .runtime/server.log" as critical'
   exit 1
