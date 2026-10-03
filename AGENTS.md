@@ -1,5 +1,7 @@
 # Repository instructions
 
+When this checkout is inside `life-stack`, first read the shared [workspace instructions](../AGENTS.md) if they have not already been loaded. This file supplies project-specific overrides. If the shared file is absent in a standalone clone, continue with this file.
+
 ## Communication and scope
 
 - Communicate with the user in Russian unless they ask for another language.
