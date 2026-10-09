@@ -1,4 +1,6 @@
 from __future__ import annotations
+from personal_radar_connectors import codex as codex_client
+from personal_radar_connectors.codex import LlmError
 
 import json
 import os
@@ -28,46 +30,10 @@ modify anything, or ask follow-up questions. Use only the context included in th
 knowledge. Return only JSON that strictly matches the supplied output schema. Do not wrap it in
 Markdown, add prose outside the JSON, or change the field names.
 """
-class LlmError(RuntimeError):
-    pass
 
 
-def _run_codex(
-    prompt: str, model: str, schema_path: Path, progress_id: object,
-) -> subprocess.CompletedProcess[str] | None:
-    command = [str(VENV_PYTHON), str(RUNNER), "--model", model, "--schema", str(schema_path)]
-    with tempfile.TemporaryFile(mode="w+", encoding="utf-8") as input_stream, \
-         tempfile.TemporaryFile(mode="w+", encoding="utf-8") as output_stream, \
-         tempfile.TemporaryFile(mode="w+", encoding="utf-8") as error_stream:
-        input_stream.write(prompt)
-        input_stream.seek(0)
-        try:
-            process = subprocess.Popen(
-                command, stdin=input_stream, stdout=output_stream, stderr=error_stream,
-                text=True, cwd=ROOT,
-            )
-        except OSError as error:
-            raise LlmError(f"Не удалось запустить Codex SDK: {error}") from error
-        deadline = time.monotonic() + 300
-        while process.poll() is None:
-            if recommendation_progress.is_cancelled(progress_id):
-                process.terminate()
-                try:
-                    process.wait(timeout=2)
-                except subprocess.TimeoutExpired:
-                    process.kill()
-                    process.wait()
-                return None
-            if time.monotonic() >= deadline:
-                process.kill()
-                process.wait()
-                raise LlmError("Codex не успел ответить за 5 минут")
-            time.sleep(0.25)
-        output_stream.seek(0)
-        error_stream.seek(0)
-        return subprocess.CompletedProcess(
-            command, process.returncode, output_stream.read(), error_stream.read(),
-        )
+def _run_codex(prompt: str, model: str, schema_path: Path, progress_id: object):
+    return codex_client.run(prompt,model,schema_path,python=VENV_PYTHON,runner=RUNNER,cwd=ROOT,should_cancel=lambda:recommendation_progress.is_cancelled(progress_id))
 
 
 def get_model() -> str:

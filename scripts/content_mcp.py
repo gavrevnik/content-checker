@@ -15,6 +15,10 @@ import urllib.request
 from pathlib import Path
 
 sys.path.insert(0, str(Path(__file__).resolve().parents[1]))
+from app.runtime import ensure_connectors
+if __name__ == "__main__":
+    ensure_connectors()
+
 from app.research import INSTRUCTIONS, TOOLS, validate
 
 

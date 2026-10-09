@@ -1,1 +1,2 @@
 openai-codex==0.144.4
+-e ../personal-radar/connectors/connectors-python

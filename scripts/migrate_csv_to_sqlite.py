@@ -13,6 +13,10 @@ from pathlib import Path
 ROOT = Path(__file__).resolve().parents[1]
 sys.path.insert(0, str(ROOT))
 
+from app.runtime import ensure_connectors
+if __name__ == "__main__":
+    ensure_connectors()
+
 from app import storage
 
 

@@ -1,5 +1,8 @@
 from __future__ import annotations
 
+from personal_radar_connectors import fanart as fanart_client
+from personal_radar_connectors.fanart import FanartError
+
 import json
 import os
 import socket
@@ -9,14 +12,6 @@ import urllib.request
 from typing import Any
 
 from app import artwork, tmdb
-
-
-BASE_URL = "https://webservice.fanart.tv/v3.2/music"
-USER_AGENT = "WhatsNewChecker/2.1 (gavrevns@gmail.com)"
-
-
-class FanartError(RuntimeError):
-    pass
 
 
 def get_api_key() -> tuple[str | None, str]:
@@ -38,61 +33,11 @@ def configuration() -> dict[str, Any]:
     }
 
 
-def _request_artist(mbid: str, api_key: str) -> dict[str, Any]:
-    artist_id = str(mbid or "").strip()
-    if not artist_id:
-        raise FanartError("MusicBrainz ID исполнителя не указан")
-    url = f"{BASE_URL}/{urllib.parse.quote(artist_id)}?{urllib.parse.urlencode({'api_key': api_key})}"
-    request = urllib.request.Request(
-        url, headers={"Accept": "application/json", "User-Agent": USER_AGENT},
-    )
-    try:
-        with urllib.request.urlopen(request, timeout=25) as response:
-            payload = json.loads(response.read().decode("utf-8"))
-    except urllib.error.HTTPError as error:
-        error.close()
-        if error.code == 404:
-            return {}
-        if error.code == 401:
-            raise FanartError("fanart.tv отклонил FANART_PROJECT_KEY") from error
-        raise FanartError(f"fanart.tv: HTTP {error.code}") from error
-    except (urllib.error.URLError, TimeoutError, socket.timeout) as error:
-        reason = getattr(error, "reason", error)
-        raise FanartError(f"fanart.tv недоступен: {reason}") from error
-    except json.JSONDecodeError as error:
-        raise FanartError("fanart.tv вернул повреждённый JSON") from error
-    if not isinstance(payload, dict):
-        raise FanartError("fanart.tv вернул ответ неожиданного формата")
-    return payload
-
-
-def _likes(image: dict[str, Any]) -> int:
-    try:
-        return int(image.get("likes") or 0)
-    except (TypeError, ValueError):
-        return 0
+_request_artist = fanart_client._request_artist
 
 
 def artist_thumb_url(mbid: str, api_key: str | None = None) -> str:
-    key = str(api_key or "").strip() or str(get_api_key()[0] or "")
-    if not key:
-        raise FanartError("FANART_PROJECT_KEY is not configured")
-    payload = _request_artist(mbid, key)
-    images = [
-        image for image in (payload.get("artistthumb") or [])
-        if isinstance(image, dict) and str(image.get("url") or "").startswith(("http://", "https://"))
-    ]
-    if not images:
-        return ""
-    images.sort(
-        key=lambda image: (
-            _likes(image),
-            str(image.get("lang") or "") in {"00", "en", ""},
-            int(image.get("width") or 0) * int(image.get("height") or 0),
-        ),
-        reverse=True,
-    )
-    return str(images[0]["url"])
+    return fanart_client.artist_thumb_url(mbid, api_key or get_api_key()[0], request_artist=_request_artist)
 
 
 def enrich_artist_artwork(artist: dict[str, Any], *, force: bool = False) -> dict[str, Any]:

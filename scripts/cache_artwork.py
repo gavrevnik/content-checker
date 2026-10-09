@@ -10,6 +10,10 @@ ROOT = Path(__file__).resolve().parents[1]
 if str(ROOT) not in sys.path:
     sys.path.insert(0, str(ROOT))
 
+from app.runtime import ensure_connectors
+if __name__ == "__main__":
+    ensure_connectors()
+
 from app import artwork, fanart, storage
 
 

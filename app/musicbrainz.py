@@ -1,5 +1,10 @@
 from __future__ import annotations
 
+from personal_radar_connectors import cover_art_archive
+
+from personal_radar_connectors import musicbrainz as musicbrainz_client
+from personal_radar_connectors.musicbrainz import MusicBrainzError
+
 import json
 import socket
 import threading
@@ -13,19 +18,7 @@ from typing import Any
 from app import artwork, fanart, listenbrainz, recommendation_progress, storage
 
 
-BASE_URL = "https://musicbrainz.org/ws/2"
-COVER_ART_BASE_URL = "https://coverartarchive.org"
-APP_NAME = "WhatsNewChecker"
-APP_VERSION = "2.0"
-CONTACT_EMAIL = "gavrevns@gmail.com"
-USER_AGENT = f"{APP_NAME}/{APP_VERSION} ({CONTACT_EMAIL})"
-REQUEST_INTERVAL_SECONDS = 1.05
-_rate_lock = threading.Lock()
-_last_request_started = 0.0
-
-
-class MusicBrainzError(RuntimeError):
-    pass
+from personal_radar_connectors.musicbrainz import USER_AGENT, REQUEST_INTERVAL_SECONDS
 
 
 def configuration() -> dict[str, Any]:
@@ -38,168 +31,29 @@ def configuration() -> dict[str, Any]:
     }
 
 
-def _wait_for_rate_limit() -> None:
-    global _last_request_started
-    with _rate_lock:
-        remaining = REQUEST_INTERVAL_SECONDS - (time.monotonic() - _last_request_started)
-        if remaining > 0:
-            time.sleep(remaining)
-        _last_request_started = time.monotonic()
-
-
 def _request_json(path: str, params: dict[str, Any] | None = None) -> dict[str, Any]:
-    query = {key: value for key, value in (params or {}).items() if value not in (None, "")}
-    query["fmt"] = "json"
-    url = f"{BASE_URL}/{path.lstrip('/')}?{urllib.parse.urlencode(query)}"
-    headers = {"Accept": "application/json", "User-Agent": USER_AGENT}
-    last_error: Exception | None = None
-    for attempt in range(3):
-        _wait_for_rate_limit()
-        try:
-            with urllib.request.urlopen(
-                urllib.request.Request(url, headers=headers), timeout=25
-            ) as response:
-                payload = json.loads(response.read().decode("utf-8"))
-            if not isinstance(payload, dict):
-                raise MusicBrainzError("MusicBrainz вернул ответ неожиданного формата")
-            return payload
-        except urllib.error.HTTPError as error:
-            last_error = error
-            if error.code not in {429, 500, 502, 503, 504} or attempt == 2:
-                detail = ""
-                try:
-                    parsed = json.loads(error.read().decode("utf-8"))
-                    detail = str(parsed.get("error") or "") if isinstance(parsed, dict) else ""
-                except (json.JSONDecodeError, UnicodeDecodeError):
-                    pass
-                suffix = f": {detail}" if detail else ""
-                raise MusicBrainzError(f"MusicBrainz: HTTP {error.code}{suffix}") from error
-            retry_after = error.headers.get("Retry-After") if error.headers else None
-            try:
-                delay = max(REQUEST_INTERVAL_SECONDS, float(retry_after or 0))
-            except ValueError:
-                delay = REQUEST_INTERVAL_SECONDS * (attempt + 1)
-            time.sleep(min(delay, 10))
-        except (urllib.error.URLError, TimeoutError, socket.timeout) as error:
-            last_error = error
-            if attempt == 2:
-                reason = getattr(error, "reason", error)
-                raise MusicBrainzError(f"MusicBrainz недоступен: {reason}") from error
-            time.sleep(REQUEST_INTERVAL_SECONDS * (attempt + 1))
-        except json.JSONDecodeError as error:
-            raise MusicBrainzError("MusicBrainz вернул повреждённый JSON") from error
-    raise MusicBrainzError(f"MusicBrainz недоступен: {last_error}")
+    return musicbrainz_client._request_json(path, params)
 
 
 def _cover_art_url(release_group_mbid: str) -> str:
-    mbid = str(release_group_mbid or "").strip()
-    if not mbid:
-        return ""
-    url = f"{COVER_ART_BASE_URL}/release-group/{urllib.parse.quote(mbid)}"
-    request = urllib.request.Request(
-        url, headers={"Accept": "application/json", "User-Agent": USER_AGENT}
-    )
-    try:
-        with urllib.request.urlopen(request, timeout=20) as response:
-            payload = json.loads(response.read().decode("utf-8"))
-    except urllib.error.HTTPError as error:
-        error.close()
-        if error.code in {400, 404}:
-            return ""
-        raise MusicBrainzError(f"Cover Art Archive: HTTP {error.code}") from error
-    except (urllib.error.URLError, TimeoutError, socket.timeout) as error:
-        reason = getattr(error, "reason", error)
-        raise MusicBrainzError(f"Cover Art Archive недоступен: {reason}") from error
-    except json.JSONDecodeError as error:
-        raise MusicBrainzError("Cover Art Archive вернул повреждённый JSON") from error
-    if not isinstance(payload, dict):
-        return ""
-    for image in payload.get("images", []) or []:
-        if not isinstance(image, dict) or image.get("front") is not True:
-            continue
-        thumbnails = image.get("thumbnails") if isinstance(image.get("thumbnails"), dict) else {}
-        if thumbnails.get("250") or thumbnails.get("small"):
-            cover_url = artwork.album_cover_url(mbid)
-            try:
-                with urllib.request.urlopen(
-                    urllib.request.Request(cover_url, headers={"User-Agent": USER_AGENT}, method="HEAD"),
-                    timeout=20,
-                ):
-                    return cover_url
-            except urllib.error.HTTPError as error:
-                error.close()
-                if error.code == 404:
-                    return ""
-                raise MusicBrainzError(f"Cover Art Archive: HTTP {error.code}") from error
-            except (urllib.error.URLError, TimeoutError, socket.timeout) as error:
-                reason = getattr(error, "reason", error)
-                raise MusicBrainzError(f"Cover Art Archive недоступен: {reason}") from error
-    return ""
+    return cover_art_archive._cover_art_url(release_group_mbid)
 
 
-def _lucene(value: str) -> str:
-    return '"' + str(value).replace("\\", "\\\\").replace('"', '\\"') + '"'
+_lucene = musicbrainz_client._lucene
 
 
-def _score(value: Any) -> int:
-    try:
-        return int(value)
-    except (TypeError, ValueError):
-        return 0
+_score = musicbrainz_client._score
 
 
-def _artist_payload(raw: dict[str, Any]) -> dict[str, Any]:
-    area_raw = raw.get("area") if isinstance(raw.get("area"), dict) else {}
-    begin_area = raw.get("begin-area") if isinstance(raw.get("begin-area"), dict) else {}
-    life_span = raw.get("life-span") if isinstance(raw.get("life-span"), dict) else {}
-    name = str(raw.get("name") or "").strip()
-    mbid = str(raw.get("id") or raw.get("mbid") or "").strip()
-    return {
-        "content_type": "music",
-        "role": "artist",
-        "name": name,
-        "name_original": name,
-        "name_ru": name,
-        "sort_name": str(raw.get("sort-name") or raw.get("sort_name") or name),
-        "mbid": mbid,
-        "external_id": mbid,
-        "artist_type": str(raw.get("type") or ""),
-        "country": str(raw.get("country") or ""),
-        "area": str(area_raw.get("name") or begin_area.get("name") or ""),
-        "disambiguation": str(raw.get("disambiguation") or ""),
-        "life_span_begin": str(life_span.get("begin") or ""),
-        "life_span_end": str(life_span.get("end") or ""),
-        "details_json": raw,
-        "musicbrainz_link": f"https://musicbrainz.org/artist/{mbid}" if mbid else "",
-    }
+_artist_payload = musicbrainz_client._artist_payload
 
 
 def search_artist(name: str) -> dict[str, Any]:
-    name = str(name or "").strip()
-    if not name:
-        raise MusicBrainzError("Укажите имя исполнителя")
-    response = _request_json("artist", {"query": f"artist:{_lucene(name)}", "limit": 10})
-    artists = [item for item in response.get("artists", []) if isinstance(item, dict)]
-    if not artists:
-        raise MusicBrainzError(f"MusicBrainz не нашёл исполнителя «{name}»")
-    normalized = storage._normalized(name)
-    artists.sort(
-        key=lambda item: (
-            storage._normalized(str(item.get("name") or "")) == normalized,
-            _score(item.get("score")),
-        ),
-        reverse=True,
-    )
-    return _artist_payload(artists[0])
+    return musicbrainz_client.search_artist(name, normalize=storage._normalized, request_json=_request_json)
 
 
 def artist_details(mbid: str) -> dict[str, Any]:
-    if not str(mbid or "").strip():
-        raise MusicBrainzError("MusicBrainz ID исполнителя не указан")
-    raw = _request_json(
-        f"artist/{mbid}", {"inc": "aliases+genres+tags+ratings+url-rels"}
-    )
-    return {**_artist_payload(raw), "musicbrainz_checked": True}
+    return musicbrainz_client.artist_details(mbid, request_json=_request_json)
 
 
 def enrich_artist_artwork(payload: dict[str, Any], *, force: bool = False) -> dict[str, Any]:
@@ -230,158 +84,24 @@ def resolve_artist_input(
     return enrich_artist_artwork(details) if include_artwork else details
 
 
-def _artist_credits(raw: dict[str, Any]) -> list[dict[str, Any]]:
-    results: list[dict[str, Any]] = []
-    for credit in raw.get("artist-credit", []) or []:
-        if not isinstance(credit, dict):
-            continue
-        artist = credit.get("artist") if isinstance(credit.get("artist"), dict) else {}
-        name = str(credit.get("name") or artist.get("name") or "").strip()
-        if not name:
-            continue
-        results.append({
-            "name": name,
-            "credit_name": name,
-            "mbid": str(artist.get("id") or ""),
-            "sort_name": str(artist.get("sort-name") or name),
-        })
-    return results
+_artist_credits = musicbrainz_client._artist_credits
 
 
-def _named_values(raw: Any, maximum: int = 20) -> list[dict[str, Any]]:
-    values = [item for item in (raw or []) if isinstance(item, dict) and item.get("name")]
-    values.sort(key=lambda item: int(item.get("count") or 0), reverse=True)
-    return [
-        {"name": str(item["name"]), "count": int(item.get("count") or 0)}
-        for item in values[:maximum]
-    ]
+_named_values = musicbrainz_client._named_values
 
 
-def _release_group_payload(raw: dict[str, Any]) -> dict[str, Any]:
-    title = str(raw.get("title") or "").strip()
-    mbid = str(raw.get("id") or "").strip()
-    first_date = str(raw.get("first-release-date") or "")
-    artists = _artist_credits(raw)
-    return {
-        "content_type": "music",
-        "title_original": title,
-        "title_ru": title,
-        "release_group_mbid": mbid,
-        "mbid": mbid,
-        "first_release_date": first_date,
-        "release_date": first_date,
-        "year": int(first_date[:4]) if first_date[:4].isdigit() else None,
-        "primary_type": str(raw.get("primary-type") or "Album"),
-        "secondary_types": [str(value) for value in (raw.get("secondary-types") or [])],
-        "disambiguation": str(raw.get("disambiguation") or ""),
-        "genres_data": _named_values(raw.get("genres")),
-        "tags_data": _named_values(raw.get("tags")),
-        "artists_data": artists,
-        "artists": "; ".join(artist["credit_name"] for artist in artists),
-        "musicbrainz_link": f"https://musicbrainz.org/release-group/{mbid}" if mbid else "",
-        "source": "musicbrainz",
-        "url": f"https://musicbrainz.org/release-group/{mbid}" if mbid else "",
-    }
+_release_group_payload = musicbrainz_client._release_group_payload
 
 
 def search_album(title: str, artist: str = "", year: Any = None) -> dict[str, Any]:
-    title = str(title or "").strip()
-    artist = str(artist or "").strip()
-    if not title:
-        raise MusicBrainzError("Укажите название альбома")
-    terms = [f"releasegroup:{_lucene(title)}", "primarytype:album"]
-    if artist:
-        terms.append(f"artist:{_lucene(artist)}")
-    if str(year or "").isdigit():
-        terms.append(f"firstreleasedate:{int(year)}")
-    response = _request_json(
-        "release-group", {"query": " AND ".join(terms), "limit": 10}
-    )
-    groups = [item for item in response.get("release-groups", []) if isinstance(item, dict)]
-    if not groups and str(year or "").isdigit():
-        terms = [term for term in terms if not term.startswith("firstreleasedate:")]
-        response = _request_json(
-            "release-group", {"query": " AND ".join(terms), "limit": 10}
-        )
-        groups = [item for item in response.get("release-groups", []) if isinstance(item, dict)]
-    if not groups:
-        suffix = f" — {artist}" if artist else ""
-        raise MusicBrainzError(f"MusicBrainz не нашёл альбом «{title}{suffix}»")
-    normalized_title = storage._normalized(title)
-    normalized_artist = storage._normalized(artist)
-
-    def rank(item: dict[str, Any]) -> tuple[int, int, int, int]:
-        payload = _release_group_payload(item)
-        candidate_year = payload.get("year")
-        year_distance = abs(int(year) - int(candidate_year)) if str(year or "").isdigit() and candidate_year else 9999
-        artist_match = not normalized_artist or normalized_artist in storage._normalized(payload.get("artists", ""))
-        return (
-            int(storage._normalized(str(item.get("title") or "")) == normalized_title),
-            int(artist_match),
-            -year_distance,
-            _score(item.get("score")),
-        )
-
-    groups.sort(key=rank, reverse=True)
-    return _release_group_payload(groups[0])
+    return musicbrainz_client.search_album(title, artist, year, normalize=storage._normalized, request_json=_request_json)
 
 
-def _best_release(releases: list[dict[str, Any]], first_date: str) -> dict[str, Any] | None:
-    valid = [release for release in releases if isinstance(release, dict) and release.get("id")]
-    if not valid:
-        return None
-    status_priority = {"Official": 3, "Promotion": 2, "": 1}
-
-    def rank(release: dict[str, Any]) -> tuple[int, int, int]:
-        release_date = str(release.get("date") or "")
-        same_date = int(bool(first_date and release_date == first_date))
-        same_year = int(bool(first_date[:4] and release_date[:4] == first_date[:4]))
-        return (same_date, same_year, status_priority.get(str(release.get("status") or ""), 0))
-
-    return max(valid, key=rank)
+_best_release = musicbrainz_client._best_release
 
 
 def _release_details(mbid: str) -> dict[str, Any]:
-    raw = _request_json(
-        f"release/{mbid}",
-        {"inc": "artist-credits+labels+media+recordings+release-groups"},
-    )
-    media = [medium for medium in raw.get("media", []) if isinstance(medium, dict)]
-    tracks: list[dict[str, Any]] = []
-    track_count = 0
-    formats: list[str] = []
-    for medium in media:
-        if medium.get("format") and str(medium["format"]) not in formats:
-            formats.append(str(medium["format"]))
-        medium_tracks = [track for track in medium.get("tracks", []) if isinstance(track, dict)]
-        track_count += int(medium.get("track-count") or len(medium_tracks))
-        for track in medium_tracks:
-            tracks.append({
-                "number": str(track.get("number") or track.get("position") or ""),
-                "title": str(track.get("title") or ""),
-                "length_ms": track.get("length"),
-            })
-    label_info = [item for item in raw.get("label-info", []) if isinstance(item, dict)]
-    labels = []
-    catalog_numbers = []
-    for item in label_info:
-        label = item.get("label") if isinstance(item.get("label"), dict) else {}
-        if label.get("name") and str(label["name"]) not in labels:
-            labels.append(str(label["name"]))
-        if item.get("catalog-number") and str(item["catalog-number"]) not in catalog_numbers:
-            catalog_numbers.append(str(item["catalog-number"]))
-    return {
-        "primary_release_mbid": str(raw.get("id") or mbid),
-        "track_count": track_count or None,
-        "country": str(raw.get("country") or ""),
-        "label": "; ".join(labels),
-        "catalog_number": "; ".join(catalog_numbers),
-        "barcode": str(raw.get("barcode") or ""),
-        "media_formats": "; ".join(formats),
-        "release_status": str(raw.get("status") or ""),
-        "release_title": str(raw.get("title") or ""),
-        "track_list": tracks,
-    }
+    return musicbrainz_client._release_details(mbid, request_json=_request_json)
 
 
 def album_details(

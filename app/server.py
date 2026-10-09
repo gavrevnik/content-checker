@@ -16,6 +16,9 @@ if __package__ in (None, ""):
     import sys
 
     sys.path.insert(0, str(Path(__file__).resolve().parents[1]))
+    if __name__ == "__main__":
+        from app.runtime import ensure_connectors
+        ensure_connectors()
 
 from app import ai_digest, research, artwork, fanart, listenbrainz, llm, musicbrainz, recommendation_progress, storage, tmdb
 

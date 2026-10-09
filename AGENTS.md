@@ -50,3 +50,9 @@ When this checkout is inside `life-stack`, first read the shared [workspace inst
 
 - Digests exclude future release_date by default; include_unreleased requires an explicit upcoming-film request. Check library_match; exclude_existing only for explicit new-to-library requests. Keep current membership distinct from the snapshot at creation.
 - AI Score uses 70% query relevance and 30% taste. Update all pending personal feedback through film_preferences_save with revision/fingerprints before scoring; never learn tastes from AI Score or public ratings. No background LLM calls.
+
+## Общие коннекторы и Knowledge
+
+- Provider API/transport implementations находятся в [Personal Radar connectors](../personal-radar/connectors/README.md); SQLite, domain filters/dedupe/AI/UI и прикладные MCP остаются здесь. Сохранять обязательные quota adapters; тестировать внешние операции mocks на фактическом общем модуле.
+- `personal-radar/knowledge` — канонический каталог долгосрочных знаний. Текущие SQLite-профили, источники/интересы и реакции сохраняются без автоматической миграции. Следовать [границам владения](../personal-radar/docs/storage-boundaries.md); не добавлять auto outbox, GitHub writes или двусторонний sync из пользовательских действий.
+- Discovery возвращает source-кандидатов: name/URL/platform/external IDs/description/provenance/evidence/relevance. Review/deduplication по стабильной identity предшествуют потенциальному переносу подтверждённых источников в Knowledge отдельным запросом. Разрешённые локальные импорты продолжают использовать прежние tools/flags/budgets; discovery/digest не разрешают запись Knowledge.

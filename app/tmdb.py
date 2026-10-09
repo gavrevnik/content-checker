@@ -1,5 +1,14 @@
 from __future__ import annotations
 
+from personal_radar_connectors import kinopoisk as kinopoisk_client
+
+from personal_radar_connectors import omdb as omdb_client
+
+from personal_radar_connectors import tmdb as tmdb_client
+from personal_radar_connectors.tmdb import TmdbError, _request_json
+
+from personal_radar_connectors.credentials import read_literal_secrets
+
 import ast
 import difflib
 import json
@@ -16,9 +25,6 @@ from app import artwork, recommendation_progress, storage
 from app.storage import ROOT, _normalized
 
 
-BASE_URL = "https://api.themoviedb.org/3"
-OMDB_URL = "https://www.omdbapi.com/"
-KINOPOISK_URL = "https://kinopoiskapiunofficial.tech/api/v2.2/films"
 TMDB_GENRE_ALIASES = {
     28: {"action", "боевик"},
     12: {"adventure", "приключения"},
@@ -42,10 +48,6 @@ TMDB_GENRE_ALIASES = {
 }
 
 
-class TmdbError(RuntimeError):
-    pass
-
-
 def _excluded_genre_filters(raw: Any) -> tuple[set[int], set[str]]:
     values = raw if isinstance(raw, list) else str(raw or "").split(",")
     requested = {_normalized(str(value)) for value in values if _normalized(str(value))}
@@ -59,25 +61,8 @@ def _excluded_genre_filters(raw: Any) -> tuple[set[int], set[str]]:
     return genre_ids, names
 
 
-def _local_secrets() -> dict[str, str]:
-    secrets_path = ROOT / "SECRETS"
-    if not secrets_path.exists():
-        return {}
-    try:
-        tree = ast.parse(secrets_path.read_text(encoding="utf-8"), filename=str(secrets_path))
-    except (OSError, SyntaxError):
-        return {}
-    values: dict[str, str] = {}
-    for node in tree.body:
-        if not isinstance(node, ast.Assign) or len(node.targets) != 1 or not isinstance(node.targets[0], ast.Name):
-            continue
-        try:
-            value = ast.literal_eval(node.value)
-        except (ValueError, TypeError):
-            continue
-        if isinstance(value, str):
-            values[node.targets[0].id] = value.strip()
-    return values
+def _local_secrets() -> dict[str,str]:
+    return read_literal_secrets(ROOT / "SECRETS")
 
 
 def get_api_key() -> tuple[str | None, str]:
@@ -104,157 +89,16 @@ def get_kinopoisk_key() -> tuple[str | None, str]:
     return (value, "SECRETS") if value else (None, "not configured")
 
 
-def _request_json(url: str, headers: dict[str, str] | None = None) -> dict[str, Any]:
-    request = urllib.request.Request(
-        url,
-        headers={"Accept": "application/json", "User-Agent": "WhatsNewChecker/2.0", **(headers or {})},
-    )
-    try:
-        with urllib.request.urlopen(request, timeout=25) as response:
-            payload = json.loads(response.read().decode("utf-8"))
-    except urllib.error.HTTPError as error:
-        raise TmdbError(f"Provider returned HTTP {error.code}") from None
-    except (urllib.error.URLError, TimeoutError, json.JSONDecodeError) as error:
-        raise TmdbError(f"Provider request failed ({type(error).__name__})") from None
-    if not isinstance(payload, dict):
-        raise TmdbError("Provider returned an invalid response")
-    return payload
-
-
 def _get(path: str, params: dict[str, Any], api_key: str) -> dict[str, Any]:
-    query = urllib.parse.urlencode({**params, "api_key": api_key})
-    try:
-        return _request_json(f"{BASE_URL}{path}?{query}")
-    except TmdbError as error:
-        raise TmdbError(f"TMDB: {error}") from error
+    return tmdb_client.get(path, params, api_key, request_json=_request_json)
 
 
 def _get_omdb(imdb_id: str) -> dict[str, Any]:
-    api_key, _ = get_omdb_key()
-    if not api_key or not imdb_id:
-        return {}
-    query = urllib.parse.urlencode({"i": imdb_id, "apikey": api_key, "plot": "full"})
-    try:
-        payload = _request_json(f"{OMDB_URL}?{query}")
-    except TmdbError:
-        return {}
-    response_status = payload.get("Response")
-    if response_status == "False":
-        return {"omdb_checked": True}
-    if response_status != "True":
-        return {}
-    def clean(key: str) -> str:
-        value = str(payload.get(key) or "").strip()
-        return "" if value in ("", "N/A") else value
-
-    rating_raw = clean("imdbRating")
-    metascore_raw = clean("Metascore")
-    awards = str(payload.get("Awards") or "").strip()
-    try:
-        numeric_rating = float(rating_raw) if rating_raw else None
-    except ValueError:
-        numeric_rating = None
-    return {
-        "omdb_checked": True,
-        "imdb_rating": numeric_rating,
-        "imdb_votes": clean("imdbVotes"),
-        "metascore": int(metascore_raw) if metascore_raw.isdigit() else None,
-        "content_rating": clean("Rated"),
-        "box_office": clean("BoxOffice"),
-        "omdb_plot": clean("Plot"),
-        "omdb_writers": clean("Writer"),
-        "omdb_cast": clean("Actors"),
-        "omdb_countries": clean("Country"),
-        "omdb_languages": clean("Language"),
-        "awards_json": [{"source": "omdb", "summary": awards}] if awards and awards != "N/A" else [],
-    }
+    return omdb_client.get(imdb_id, get_omdb_key()[0], request_json=_request_json)
 
 
 def _get_kinopoisk(imdb_id: str, title_original: str, title_ru: str, year: Any) -> dict[str, Any]:
-    """Resolve a movie by IMDb ID, falling back to a normalized title search."""
-    api_key, _ = get_kinopoisk_key()
-    if not api_key:
-        return {}
-    target_year = int(year) if str(year).isdigit() else None
-    request_errors: list[TmdbError] = []
-    request_succeeded = False
-
-    def fetch(params: dict[str, Any]) -> list[dict[str, Any]]:
-        nonlocal request_succeeded
-        try:
-            payload = _request_json(
-                f"{KINOPOISK_URL}?{urllib.parse.urlencode(params)}",
-                {"X-API-KEY": api_key},
-            )
-        except TmdbError as error:
-            request_errors.append(error)
-            return []
-        items = payload.get("items", [])
-        if not isinstance(items, list):
-            return []
-        request_succeeded = True
-        return [item for item in items if isinstance(item, dict)]
-
-    candidates: list[dict[str, Any]] = []
-    if imdb_id:
-        imdb_items = fetch({"imdbId": imdb_id})
-        candidates = [item for item in imdb_items if str(item.get("imdbId") or "") == imdb_id]
-
-    if not candidates:
-        query = (title_ru or title_original).translate(str.maketrans({"ё": "е", "Ё": "Е"}))
-        if query:
-            params: dict[str, Any] = {"keyword": query, "type": "FILM"}
-            if target_year is not None:
-                params.update({"yearFrom": max(1000, target_year - 1), "yearTo": target_year + 1})
-            title_items = fetch(params)
-            wanted = {_normalized(title_original), _normalized(title_ru)} - {""}
-            for item in title_items:
-                names = {
-                    _normalized(str(item.get("nameOriginal") or "")),
-                    _normalized(str(item.get("nameEn") or "")),
-                    _normalized(str(item.get("nameRu") or "")),
-                } - {""}
-                candidate_year = item.get("year")
-                year_matches = (
-                    target_year is None
-                    or str(candidate_year).isdigit() and abs(int(candidate_year) - target_year) <= 1
-                )
-                if wanted & names and year_matches:
-                    candidates.append(item)
-
-    if not candidates and request_errors:
-        error = request_errors[-1]
-        # This companion provider must not make an otherwise valid TMDB refresh fail.
-        is_limit = "HTTP 402" in str(error) or "HTTP 429" in str(error)
-        message = (
-            "Достигнут лимит запросов Kinopoisk API. Фильм создан без рейтинга и ссылки КП."
-            if is_limit
-            else f"Kinopoisk API недоступен: {error}. Фильм создан без данных КП."
-        )
-        return {
-            "provider_warnings": [{
-                "provider": "kinopoisk",
-                "kind": "limit" if is_limit else "error",
-                "message": message,
-            }],
-        }
-    if not candidates:
-        return {"kinopoisk_checked": True} if request_succeeded else {}
-    candidate = max(candidates, key=lambda item: float(item.get("ratingKinopoisk") or 0))
-    kinopoisk_id = candidate.get("kinopoiskId")
-    rating = candidate.get("ratingKinopoisk")
-    if not str(kinopoisk_id).isdigit():
-        return {"kinopoisk_checked": True}
-    try:
-        numeric_rating = float(rating) if rating not in (None, "") else None
-    except (TypeError, ValueError):
-        numeric_rating = None
-    return {
-        "kinopoisk_checked": True,
-        "kinopoisk_id": int(kinopoisk_id),
-        "kinopoisk_rating": numeric_rating,
-        "kinopoisk_link": f"https://www.kinopoisk.ru/film/{int(kinopoisk_id)}/",
-    }
+    return kinopoisk_client.get(imdb_id, title_original, title_ru, year, get_kinopoisk_key()[0], normalize=_normalized, request_json=_request_json)
 
 
 def configuration() -> dict[str, Any]:

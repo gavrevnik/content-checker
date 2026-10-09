@@ -1,5 +1,7 @@
 from __future__ import annotations
 
+from personal_radar_connectors.images import ArtworkError, read_image, album_cover_url, movie_poster_url, person_profile_url, preferred_album_cover_url
+
 import mimetypes
 import os
 import re
@@ -19,44 +21,6 @@ ALBUM_COVER_SIZE = 250
 MOVIE_POSTER_SIZE = "w185"
 PERSON_PROFILE_SIZE = "w185"
 FANART_ARTIST_WIDTH = 200
-
-
-class ArtworkError(RuntimeError):
-    pass
-
-
-def album_cover_url(release_group_mbid: str) -> str:
-    mbid = str(release_group_mbid or "").strip()
-    return f"https://coverartarchive.org/release-group/{mbid}/front-{ALBUM_COVER_SIZE}" if mbid else ""
-
-
-def movie_poster_url(poster_path: str) -> str:
-    path = str(poster_path or "").strip()
-    if not path:
-        return ""
-    if path.startswith("http://") or path.startswith("https://"):
-        if "image.tmdb.org/t/p/" in path:
-            return re.sub(r"(/t/p/)[^/]+/", rf"\g<1>{MOVIE_POSTER_SIZE}/", path, count=1)
-        return path
-    return f"https://image.tmdb.org/t/p/{MOVIE_POSTER_SIZE}/{path.lstrip('/')}"
-
-
-def person_profile_url(profile_path: str) -> str:
-    path = str(profile_path or "").strip()
-    if not path:
-        return ""
-    if path.startswith("http://") or path.startswith("https://"):
-        if "image.tmdb.org/t/p/" in path:
-            return re.sub(r"(/t/p/)[^/]+/", rf"\g<1>{PERSON_PROFILE_SIZE}/", path, count=1)
-        return path
-    return f"https://image.tmdb.org/t/p/{PERSON_PROFILE_SIZE}/{path.lstrip('/')}"
-
-
-def preferred_album_cover_url(release_group_mbid: str, cover_url: str = "") -> str:
-    url = str(cover_url or "").strip()
-    if "coverartarchive.org/release-group/" in url:
-        return re.sub(r"/front(?:-(?:250|500|1200))?$", f"/front-{ALBUM_COVER_SIZE}", url)
-    return url or album_cover_url(release_group_mbid)
 
 
 def _safe_identifier(value: object) -> str:
@@ -115,13 +79,9 @@ def _download(
     request = urllib.request.Request(url, headers={"User-Agent": USER_AGENT})
     temporary_name = ""
     try:
-        with urllib.request.urlopen(request, timeout=20) as response:
-            content_type = str(response.headers.get("Content-Type") or "").split(";", 1)[0]
-            if content_type and not content_type.startswith("image/"):
-                raise ArtworkError(f"Источник вернул не изображение ({content_type})")
-            body = response.read(maximum_bytes + 1)
-            if len(body) > maximum_bytes:
-                raise ArtworkError("Файл изображения превышает допустимый размер")
+        body=read_image(url,maximum_bytes=maximum_bytes,user_agent=USER_AGENT)
+        if body is None:
+            return False
         handle, temporary_name = tempfile.mkstemp(
             prefix=f".{destination.stem}.", suffix=destination.suffix, dir=destination.parent,
         )
