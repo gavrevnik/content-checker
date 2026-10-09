@@ -307,6 +307,8 @@ def connect(path: Path | None = None) -> sqlite3.Connection:
 def initialize_database(path: Path | None = None) -> None:
     with _lock, connect(path) as connection:
         connection.executescript(SCHEMA)
+        from app.catalog_sync import SCHEMA as catalog_schema
+        connection.executescript(catalog_schema)
         needs_artwork_backfill = not connection.execute(
             "SELECT 1 FROM schema_version WHERE version = 9"
         ).fetchone()
@@ -563,6 +565,7 @@ def _movie_select(where: str = "", params: tuple[Any, ...] = ()) -> list[dict[st
     """
     with connect() as connection:
         results = [dict(row) for row in connection.execute(query, params).fetchall()]
+        radar_links = {row['local_entity_id']:row['radar_id'] for row in connection.execute("SELECT local_entity_id,radar_id FROM catalog_entity_links WHERE local_entity_type='content_items'")}
     for result in results:
         try:
             details = json.loads(result.get("details_json") or "{}")
@@ -573,6 +576,8 @@ def _movie_select(where: str = "", params: tuple[Any, ...] = ()) -> list[dict[st
         result["poster_path"] = result.pop("stored_poster_path", "")
         result["poster_url"] = result.pop("stored_poster_url", "")
         result["poster_local_path"] = result.pop("stored_poster_local_path", "")
+        if result['id'] in radar_links:result['radar_id']=radar_links[result['id']]
+        else:result.pop('radar_id',None)
         result["favorite"] = bool(result.get("favorite"))
         result["planned_soon"] = bool(result.get("planned_soon"))
         imdb_id = str(result.get("imdb_id") or "")
@@ -648,6 +653,7 @@ def _album_select(where: str = "", params: tuple[Any, ...] = ()) -> list[dict[st
     """
     with connect() as connection:
         results = [dict(row) for row in connection.execute(query, params).fetchall()]
+        radar_links = {row['local_entity_id']:row['radar_id'] for row in connection.execute("SELECT local_entity_id,radar_id FROM catalog_entity_links WHERE local_entity_type='content_items'")}
     for result in results:
         for source_key, target_key in (("genres_json", "genres"), ("tags_json", "tags")):
             try:
@@ -671,6 +677,8 @@ def _album_select(where: str = "", params: tuple[Any, ...] = ()) -> list[dict[st
         mbid = str(result.get("release_group_mbid") or "")
         result["musicbrainz_link"] = f"https://musicbrainz.org/release-group/{mbid}" if mbid else ""
         result["external_link"] = result["musicbrainz_link"] or str(result.get("url") or "")
+        if result['id'] in radar_links:result['radar_id']=radar_links[result['id']]
+        else:result.pop('radar_id',None)
         result["favorite"] = bool(result.get("favorite"))
         result["planned_soon"] = bool(result.get("planned_soon"))
     return results
@@ -1728,6 +1736,9 @@ def update_item(item_id: str, changes: dict[str, Any]) -> dict[str, Any]:
             "consumed_at = ?, updated_at = ? WHERE id = ?",
             (status, reaction, str(changes.get("notes", row["notes"])), planned_soon, consumed_at, _now(), item_id),
         )
+        if "reaction" in changes and reaction != row["reaction"]:
+            from app.catalog_sync import changed_reaction
+            changed_reaction(connection, item_id, reaction)
     return get_item(item_id)
 
 

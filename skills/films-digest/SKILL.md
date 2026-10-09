@@ -82,3 +82,7 @@ Discovery → Candidates → Validation/Review → потенциальное д
 - `exclude_existing`, `include_unreleased`, `summary_revision` согласно правилам выше. Пустой список допустим, если ничего не прошло фильтры: объясни причину, не придумывай фильмы.
 
 Сервер повторно проверяет будущие даты и новизну, возвращает `excluded`. Ответ в чате согласуй с **сохранёнными** items, не с исходными кандидатами. Проверь сохранение через `ai_digest_get`. Укажи, что подборка доступна в **AI Digest** сайта; UI предлагает фильтры доступности/новизны, сортировку AI Score, стандартные карточки и блок без полной карточки. Добавление в бэклог выполняется отдельным действием. Исторические оценки/summary revision не переписываются автоматически; текущая принадлежность библиотеке обновляется при чтении дайджеста.
+
+## Canonical catalog / review
+
+Сохраняй discovery/import в локальном приложении по прежним разрешениям. Для выбранных источников используй Catalog Sync `audit --manifest` (при необходимости explicit `--candidate-id`); new/conflict entries остаются pending до пользовательского review. Не утверждай manifest и не запускай Knowledge publish на основании digest/discovery запроса. Используй существующий radarId/radar_id для связанных sources/items; локальные фильтры, CRM, AI и event feedback не становятся глобальными preferences. Поддержанные явные canonical изменения формируют outbox, отправка — отдельный ручной flush, без внешних API. См. [Catalog Sync](../../../personal-radar/docs/catalog-sync.md).

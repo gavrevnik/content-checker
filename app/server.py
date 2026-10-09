@@ -26,7 +26,7 @@ from app import ai_digest, research, artwork, fanart, listenbrainz, llm, musicbr
 STATIC_DIR = Path(__file__).resolve().parent / "static"
 PID_FILE = Path(__file__).resolve().parents[1] / ".runtime" / "server.pid"
 APPLICATION_ID = "whats-new-checker"
-APP_VERSION = 63
+APP_VERSION = 64
 
 
 class Handler(BaseHTTPRequestHandler):
@@ -87,6 +87,12 @@ class Handler(BaseHTTPRequestHandler):
                     self._error("Endpoint not found", HTTPStatus.NOT_FOUND)
             except ValueError as error:
                 self._error(str(error))
+            return
+        if parsed.path == "/api/catalog":
+            if not self._research_access():return
+            from app.catalog_sync import view
+            with storage.connect() as connection:
+                self._json(view(connection))
             return
         if parsed.path == "/api/health":
             self._json({
@@ -373,6 +379,17 @@ class Handler(BaseHTTPRequestHandler):
 
     def do_PATCH(self) -> None:
         parsed = urlparse(self.path)
+        if parsed.path.startswith("/api/catalog/"):
+            if not self._research_access():return
+            try:
+                parts=[unquote(x) for x in parsed.path.strip('/').split('/')]
+                if len(parts)!=5 or parts[-1]!='interest':raise ValueError('Invalid catalog endpoint')
+                body=self._body()
+                if set(body)!={'interest'}:raise ValueError('Only interest can be changed')
+                from app.catalog_sync import set_interest
+                with storage.connect() as connection:self._json(set_interest(connection,parts[2],parts[3],body['interest']))
+            except ValueError as error:self._error(str(error))
+            return
         prefix = "/api/library/"
         if not parsed.path.startswith(prefix):
             self._error("Endpoint not found", HTTPStatus.NOT_FOUND)

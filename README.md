@@ -10,7 +10,7 @@
 
 `requirements.txt` устанавливает общий Python-пакет editable вместе с прежним Codex SDK. Существующая `.venv`, команда запуска и `.app` сохранены; после обновления зависимостей исходники библиотеки доступны без копирования. `app/*` — адаптеры provider-клиентов и прежняя доменная логика. Для отдельных scripts/tests использовать `.venv/bin/python`.
 
-SQLite-файлы, текущие карточки/профили/оценки и API/MCP/UI контракты сохранены. Долгосрочные отобранные sources/owners/items/preferences принадлежат Personal Radar Knowledge; существующие локальные данные пока не мигрируют. Discovery сохраняет source-кандидатов с identity/provenance/relevance и явным review; подтверждённые источники предназначены для будущего отдельного переноса в Knowledge. Автоматических Knowledge writes/двустороннего sync нет.
+SQLite-файлы, текущие карточки/профили/оценки и API/MCP/UI контракты сохранены. Долгосрочные отобранные sources/owners/items/preferences принадлежат Personal Radar Knowledge; существующие локальные данные пока не мигрируют. Discovery сохраняет source-кандидатов с identity/provenance/relevance и явным review; подтверждённые источники предназначены для будущего отдельного переноса в Knowledge. Ручной versioned catalog sync и outbox для явно определённых канонических полей описаны в [Catalog Sync](../personal-radar/docs/catalog-sync.md); новые кандидаты требуют утверждённого manifest.
 
 ## Запуск
 
@@ -218,3 +218,9 @@ git diff --check
 Тесты хранилища и LLM-потоков подменяют `storage.DB_PATH` временной базой, а внешние сервисы проверяются через моки. Обычный тестовый прогон не должен изменять активную базу, сохранять рекомендации или вызывать платные и внешние API.
 
 Дополнительные внешние API и локальные ручки вне AI Digest: [карта интеграций](docs/INTEGRATIONS.md).
+
+## Personal Radar Catalog Sync
+
+[Архитектура, ownership и команды](../personal-radar/docs/catalog-sync.md). Каталог отображает время последнего sync; глобальный интерес к связанным источникам редактируется отдельно от локального мониторинга. Отправка outbox — отдельный ручной `flush`; запуск приложения не обращается к GitHub. Новые/conflicting записи остаются pending до review.
+
+CLI: `.venv/bin/python scripts/catalog_sync.py status`, `pull --dry-run`, `pull`, `flush --dry-run`. Оценка связанного фильма/альбома сохраняется вместе с outbox; favorite/status/history и AI Score независимы.
