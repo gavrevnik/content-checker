@@ -764,6 +764,8 @@ function syncSearchControls() {
 }
 
 function switchView(view) {
+  $("#ai-digest-view").classList.toggle("hidden", view !== "ai-digest");
+  if (view === "ai-digest") loadDigests().catch(error => { $("#digest-error").textContent = error.message; });
   state.view = view; document.querySelectorAll("[data-view]").forEach(button => button.classList.toggle("active", button.dataset.view === view));
   $("#library-view").classList.toggle("hidden", !["backlog", "consumed"].includes(view));
   $("#favorites-view").classList.toggle("hidden", view !== "favorites");

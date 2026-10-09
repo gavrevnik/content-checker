@@ -40,3 +40,13 @@ When this checkout is inside `life-stack`, first read the shared [workspace inst
 
 - After every significant change, review the relevant `README.md` sections before handing off and update them in the same task when setup, architecture, storage, API contracts, integrations, limitations, or user-facing workflows changed.
 - Do not create documentation churn for an internal refactor or small bug fix that leaves documented behavior and operating instructions unchanged.
+
+## Movie AI Digest
+
+- For movie recommendation/digest requests through chat, use [films-digest](skills/films-digest/SKILL.md), the `content-checker` MCP tools and [AI Digest workflow](docs/AI_DIGEST.md). Start with `content_status`, `film_preferences_context` and `library_context`; save requested digests with `ai_digest_save`. If the MCP is not yet visible in the current chat, the identical local tools are available through `/api/research/call`.
+- Festival requests default to the main competition (Oscars: Best Picture), including all selected nominees and winners. Festival edition year is distinct from production year. Read category descriptions from `festival_catalog`. Verify title/year/director before selecting a TMDB candidate.
+- Use server-produced `movie_ref` and `availability_ref`; keep unresolved films as linked fallback entries. Group chat recommendations by the returned availability confidence; distinguish unknown/not-found, subtitles and audio. Future digital release dates are not evidence of an already available film.
+- Saving a user-requested digest authorizes its snapshots, not automatic backlog imports. Creating/testing the MCP itself does not request a real digest. Tests must keep live library data untouched.
+
+- Digests exclude future release_date by default; include_unreleased requires an explicit upcoming-film request. Check library_match; exclude_existing only for explicit new-to-library requests. Keep current membership distinct from the snapshot at creation.
+- AI Score uses 70% query relevance and 30% taste. Update all pending personal feedback through film_preferences_save with revision/fingerprints before scoring; never learn tastes from AI Score or public ratings. No background LLM calls.

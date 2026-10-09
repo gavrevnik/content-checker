@@ -17,13 +17,13 @@ if __package__ in (None, ""):
 
     sys.path.insert(0, str(Path(__file__).resolve().parents[1]))
 
-from app import artwork, fanart, listenbrainz, llm, musicbrainz, recommendation_progress, storage, tmdb
+from app import ai_digest, research, artwork, fanart, listenbrainz, llm, musicbrainz, recommendation_progress, storage, tmdb
 
 
 STATIC_DIR = Path(__file__).resolve().parent / "static"
 PID_FILE = Path(__file__).resolve().parents[1] / ".runtime" / "server.pid"
 APPLICATION_ID = "whats-new-checker"
-APP_VERSION = 56
+APP_VERSION = 63
 
 
 class Handler(BaseHTTPRequestHandler):
@@ -46,15 +46,45 @@ class Handler(BaseHTTPRequestHandler):
 
     def _body(self) -> dict:
         length = int(self.headers.get("Content-Length", "0"))
-        if length > 1_000_000:
+        if length < 0 or length > 1_000_000:
             raise ValueError("Request is too large")
         payload = json.loads(self.rfile.read(length).decode("utf-8") or "{}")
         if not isinstance(payload, dict):
             raise ValueError("JSON object expected")
         return payload
 
+    def _research_access(self, post=False) -> bool:
+        port = self.server.server_address[1]
+        allowed_hosts = {f"127.0.0.1:{port}", f"localhost:{port}", f"[::1]:{port}", "content-checker.localhost"}
+        allowed_origins = {"http://" + h for h in allowed_hosts}
+        if self.headers.get("Host", "") not in allowed_hosts or (
+            self.headers.get("Origin") and self.headers.get("Origin") not in allowed_origins
+        ):
+            self._error("Local Host/Origin required", HTTPStatus.FORBIDDEN)
+            return False
+        if post and self.headers.get("Content-Type", "").split(";")[0].strip() != "application/json":
+            self._error("application/json required", HTTPStatus.UNSUPPORTED_MEDIA_TYPE)
+            return False
+        return True
+
     def do_GET(self) -> None:
         parsed = urlparse(self.path)
+        if parsed.path.startswith(("/api/ai-digests", "/api/research/")):
+            if not self._research_access():
+                return
+            try:
+                if parsed.path == "/api/research/tools":
+                    self._json({"tools": research.TOOLS, "instructions": research.INSTRUCTIONS})
+                elif parsed.path == "/api/ai-digests":
+                    query = parse_qs(parsed.query)
+                    self._json(research.call("ai_digest_list", {"limit": int(query.get("limit", [30])[0]), "offset": int(query.get("offset", [0])[0])}))
+                elif parsed.path.startswith("/api/ai-digests/"):
+                    self._json(ai_digest.get_digest(unquote(parsed.path[len("/api/ai-digests/"):])))
+                else:
+                    self._error("Endpoint not found", HTTPStatus.NOT_FOUND)
+            except ValueError as error:
+                self._error(str(error))
+            return
         if parsed.path == "/api/health":
             self._json({
                 "ok": True, "application": APPLICATION_ID,
@@ -198,7 +228,18 @@ class Handler(BaseHTTPRequestHandler):
     def do_POST(self) -> None:
         parsed = urlparse(self.path)
         try:
+            if parsed.path in {"/api/research/call", "/api/ai-digests"} and not self._research_access(post=True):
+                return
             payload = self._body()
+            if parsed.path == "/api/research/call":
+                try:
+                    self._json(research.call(payload.get("name"), payload.get("arguments", {})))
+                except tmdb.TmdbError:
+                    self._error("Ошибка провайдера TMDB/IMDb/КП; проверьте конфигурацию и квоту")
+                return
+            if parsed.path == "/api/ai-digests":
+                self._json(research.call("ai_digest_save", payload))
+                return
             if parsed.path == "/api/search/movie":
                 self._json(tmdb.search_movie_candidates(payload))
                 return

@@ -17,11 +17,19 @@
         <button class="nav-item" data-view="people"><svg class="nav-icon" viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="8" r="4"/><path d="M4.5 21a7.5 7.5 0 0 1 15 0"/></svg>Персоны</button>
         <button class="nav-item" data-view="favorites"><svg class="nav-icon" viewBox="0 0 24 24" aria-hidden="true"><path d="m12 3 2.8 5.7 6.2.9-4.5 4.4 1.1 6.2-5.6-2.9-5.6 2.9 1.1-6.2L3 9.6l6.2-.9Z"/></svg>Избранное</button>
         <button class="nav-item" data-view="trash"><svg class="nav-icon" viewBox="0 0 24 24" aria-hidden="true"><path d="M3 9h18l-1.8 11H4.8L3 9ZM8 9l4-6 4 6M8 12v5M12 12v5M16 12v5"/></svg>Корзина</button>
+        <button class="nav-item" data-view="ai-digest"><svg class="nav-icon" viewBox="0 0 24 24" aria-hidden="true"><path d="m12 3 2.5 6.5L21 12l-6.5 2.5L12 21l-2.5-6.5L3 12l6.5-2.5Z"/></svg>AI Digest</button>
       </nav>
       <div class="sidebar-foot"><span class="status-dot"></span><span>SQLite · локально</span></div>
     </aside>
 
     <main>
+      <section id="ai-digest-view" class="hidden">
+        <div class="section-bar"><div><p class="eyebrow">Персональные подборки</p><h1>AI Digest</h1></div><button id="digest-refresh" class="button secondary" type="button">↻ Обновить</button></div>
+        <p class="digest-intro">Попросите в чате подборку фильмов — здесь сохранятся ваш запрос, рекомендации и результаты проверки доступности.</p>
+        <p id="digest-error" class="error" role="alert"></p>
+        <div id="digest-list" class="digest-list" aria-label="Сохранённые подборки"></div>
+        <button id="digest-more" class="button secondary hidden" type="button">Ещё подборки</button>
+      </section>
       <section id="library-view">
         <div id="backlog-panel">
           <div class="backlog-toolbar" role="group" aria-label="Инструменты бэклога">
@@ -158,6 +166,12 @@
 
     </main>
   </div>
+
+  <dialog id="digest-dialog" class="digest-dialog" aria-labelledby="digest-dialog-title">
+    <div class="dialog-head"><h2 id="digest-dialog-title">AI Digest</h2><button class="dialog-close" type="button" data-close-dialog="digest-dialog" aria-label="Закрыть дайджест">×</button></div>
+    <p id="digest-modal-error" class="error" role="alert"></p>
+    <div id="digest-detail" aria-live="polite"></div>
+  </dialog>
 
   <dialog id="details-dialog"><div class="dialog-head"><div><p id="details-eyebrow" class="eyebrow">Карточка фильма</p><h2 id="details-title"></h2></div><div class="dialog-head-actions"><button id="refresh-detail" class="button secondary" type="button">↻ Актуализировать из TMDB</button><button class="dialog-close" type="button" data-close-dialog="details-dialog">×</button></div></div><div id="details-content" class="details-grid"></div></dialog>
 
@@ -313,5 +327,6 @@
   <div id="toast" role="status" aria-live="polite"></div>
   <script src="http://127.0.0.1:8790/heartbeat.js" data-life-hub-service="content-checker" defer></script>
   <script src="/app.js" defer></script>
+  <script src="/ai-digest.js" defer></script>
 </body>
 </html>

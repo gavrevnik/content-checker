@@ -22,6 +22,36 @@ _lock = threading.RLock()
 SCHEMA = """
 PRAGMA foreign_keys = ON;
 
+CREATE TABLE IF NOT EXISTS film_preference_summary (
+    id TEXT PRIMARY KEY CHECK(id='main'),
+    summary TEXT NOT NULL,
+    revision INTEGER NOT NULL,
+    updated_at TEXT NOT NULL
+);
+CREATE TABLE IF NOT EXISTS film_preference_evidence (
+    movie_id TEXT PRIMARY KEY,
+    fingerprint TEXT NOT NULL,
+    snapshot TEXT NOT NULL,
+    conclusion TEXT NOT NULL,
+    summary_revision INTEGER NOT NULL,
+    reviewed_at TEXT NOT NULL
+);
+
+CREATE TABLE IF NOT EXISTS research_snapshots (
+    id TEXT PRIMARY KEY,
+    kind TEXT NOT NULL,
+    cache_key TEXT NOT NULL,
+    data TEXT NOT NULL,
+    created_at TEXT NOT NULL
+);
+CREATE INDEX IF NOT EXISTS idx_research_cache ON research_snapshots(kind, cache_key, created_at);
+CREATE TABLE IF NOT EXISTS ai_digests (
+    id TEXT PRIMARY KEY,
+    request_key TEXT NOT NULL UNIQUE,
+    data TEXT NOT NULL,
+    created_at TEXT NOT NULL
+);
+
 CREATE TABLE IF NOT EXISTS schema_version (
     version INTEGER PRIMARY KEY,
     applied_at TEXT NOT NULL

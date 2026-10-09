@@ -113,10 +113,9 @@ def _request_json(url: str, headers: dict[str, str] | None = None) -> dict[str, 
         with urllib.request.urlopen(request, timeout=25) as response:
             payload = json.loads(response.read().decode("utf-8"))
     except urllib.error.HTTPError as error:
-        message = error.read().decode("utf-8", errors="replace")[:300]
-        raise TmdbError(f"Provider returned HTTP {error.code}: {message}") from error
+        raise TmdbError(f"Provider returned HTTP {error.code}") from None
     except (urllib.error.URLError, TimeoutError, json.JSONDecodeError) as error:
-        raise TmdbError(f"Provider request failed: {error}") from error
+        raise TmdbError(f"Provider request failed ({type(error).__name__})") from None
     if not isinstance(payload, dict):
         raise TmdbError("Provider returned an invalid response")
     return payload
@@ -392,6 +391,7 @@ def movie_details(
         "tmdb_checked": True,
         "title_ru": str(details.get("title") or ""),
         "title_original": str(details.get("original_title") or ""),
+        "english_title": str(english_details.get("title") or ""),
         "release_date": release_date,
         "year": release_date[:4],
         "directors": "; ".join(display_name(person) for person in directors_data),
