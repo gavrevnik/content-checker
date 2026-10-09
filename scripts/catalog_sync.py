@@ -6,9 +6,12 @@ import subprocess
 import sys
 
 root = Path(__file__).resolve().parents[2]
-data = Path(
-    os.environ.get("CONTENT_CHECKER_DATA_DIR", str(root / "data/content-checker"))
-)
+project = Path(__file__).resolve().parents[1]
+configured = os.environ.get("CONTENT_CHECKER_DATA_DIR", "").strip()
+data = Path(configured).expanduser() if configured else root / "data/content-checker"
+if not data.is_absolute():
+    data = project / data
+data = data.resolve()
 python = os.environ.get(
     "CATALOG_SYNC_PYTHON", str(root / "personal-radar/.venv/bin/python")
 )
