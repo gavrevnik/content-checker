@@ -224,3 +224,7 @@ git diff --check
 [Архитектура, ownership и команды](../personal-radar/docs/catalog-sync.md). Каталог отображает время последнего sync; глобальный интерес к связанным источникам редактируется отдельно от локального мониторинга. Отправка outbox — отдельный ручной `flush`; запуск приложения не обращается к GitHub. Новые/conflicting записи остаются pending до review.
 
 CLI: `.venv/bin/python scripts/catalog_sync.py status`, `pull --dry-run`, `pull`, `flush --dry-run`. Оценка связанного фильма/альбома сохраняется вместе с outbox; favorite/status/history и AI Score независимы.
+
+## Проверка архитектурной интеграции
+
+Полный CI с приватным общим пакетом выполняется в Personal Radar (`Validate connectors and consumers`): clean install, imports, unit/MCP tests и production builds во временной структуре Life Stack. После изменения приложения запустите этот workflow в Personal Radar; source checks этого публичного репозитория проверяют доступную без приватных credentials часть и не заменяют integration CI. В workflows нет provider calls, пользовательских БД и опубликованных токенов.
