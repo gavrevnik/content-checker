@@ -43,6 +43,8 @@ When this checkout is inside `life-stack`, first read the shared [workspace inst
 
 ## Movie AI Digest
 
+- Music requests use [music-discovery](skills/music-discovery/SKILL.md), `music_preferences_context` and the separate local `personal-radar-youtube` MCP in Personal Radar. Read actual album reactions/interests and YouTube ratings; do not treat AI scores as personal feedback. Preview concrete tracks/target before confirmed private-playlist writes. No cloud Radar tools, arbitrary existing-playlist writes or automatic Knowledge imports. Registration/OAuth recovery is documented in Personal Radar `mcp-tools/youtube-local/README.md`.
+
 - For movie recommendation/digest requests through chat, use [films-digest](skills/films-digest/SKILL.md), the `content-checker` MCP tools and [AI Digest workflow](docs/AI_DIGEST.md). Start with `content_status`, `film_preferences_context` and `library_context`; save requested digests with `ai_digest_save`. If the MCP is not yet visible in the current chat, the identical local tools are available through `/api/research/call`.
 - Festival requests default to the main competition (Oscars: Best Picture), including all selected nominees and winners. Festival edition year is distinct from production year. Read category descriptions from `festival_catalog`. Verify title/year/director before selecting a TMDB candidate.
 - Use server-produced `movie_ref` and `availability_ref`; keep unresolved films as linked fallback entries. Group chat recommendations by the returned availability confidence; distinguish unknown/not-found, subtitles and audio. Future digital release dates are not evidence of an already available film.

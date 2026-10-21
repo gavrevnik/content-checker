@@ -6,6 +6,9 @@ import re
 from app import ai_digest, availability, festivals, film_preferences, storage, tmdb
 
 INSTRUCTIONS = '''Content Checker: инструменты персональных рекомендаций фильмов и AI Digest.
+Для музыкальных рекомендаций вызовите music_preferences_context и используйте локальный
+personal-radar-youtube MCP по skills/music-discovery/SKILL.md. YouTube writes требуют
+подтверждённого состава; не отправляйте их в облачный Radar.
 Сначала content_status и library_context. Сопоставляйте оригинальное/русское название, год и режиссёра;
 не выбирайте первый поисковый результат автоматически. Для фестиваля без уточнения выбирайте основной
 конкурс (Оскар: Best Picture), всех участников/номинантов, включая победителей. festival_year не равен
@@ -58,10 +61,11 @@ TOOLS = []
 def tool(name, description, schema, write=False):
     TOOLS.append({'name': name, 'description': description, 'inputSchema': schema,
                   'annotations': {'readOnlyHint': not write, 'destructiveHint': False,
-                                  'idempotentHint': name != 'film_preferences_save', 'openWorldHint': name not in {'ai_digest_save', 'ai_digest_list', 'ai_digest_get', 'library_context', 'content_status', 'library_match', 'film_preferences_context', 'film_preferences_save'}}})
+                                  'idempotentHint': name != 'film_preferences_save', 'openWorldHint': name not in {'music_preferences_context', 'ai_digest_save', 'ai_digest_list', 'ai_digest_get', 'library_context', 'content_status', 'library_match', 'film_preferences_context', 'film_preferences_save'}}})
 
 
 tool('content_status', 'Настройка провайдеров без раскрытия ключей, дата и правила дайджеста. Без внешних вызовов.', obj())
+tool('music_preferences_context', 'Музыкальные альбомы, личные реакции, заметки и отслеживаемые исполнители для рекомендаций через локальный Personal Radar YouTube MCP. Без внешних API. Независимая пагинация альбомов и артистов; корзина исключена.', obj({'limit': integer(1, 200), 'offset': integer(0, 100000), 'artist_offset': integer(0, 100000)}))
 tool('library_context', 'Предпочтения, просмотренные фильмы/реакции и бэклог, с пагинацией. Без внешних вызовов.', obj({'limit': integer(1, 200), 'offset': integer(0, 100000)}))
 tool('film_preferences_context', 'Актуальность summary вкусов и pending личные лайки/дизлайки просмотренных фильмов. Пагинация относится к pending и отдельно к ratings при include_ratings=true (действующие оценки, включая корзину). Обновите все изменения перед AI score; при сохранении пакета читайте следующий с offset=0.', obj({'limit': integer(1, 200), 'offset': integer(0, 100000), 'include_ratings': BOOL}))
 tool('film_preferences_save', 'Сохранить LLM summary вкусов и выводы по обработанным pending оценкам. expected_revision и fingerprints защищают от гонок. Только реальные реакции, не AI score. Не переписывать без изменений.', obj({'expected_revision': integer(0, 1000000), 'summary': string(16000), 'evidence': array(obj({'movie_id': string(100), 'fingerprint': string(64), 'conclusion': string(2000)}, ['movie_id', 'fingerprint', 'conclusion']), 200)}, ['expected_revision', 'summary', 'evidence']), write=True)
@@ -130,6 +134,20 @@ def call(name, args):
     if spec is None:
         raise ValueError('Неизвестный инструмент')
     validate(args, spec['inputSchema'])
+    if name == 'music_preferences_context':
+        limit, offset, artist_offset = args.get('limit', 100), args.get('offset', 0), args.get('artist_offset', 0)
+        albums = storage.list_library(content_type='music')
+        artists = storage.list_music_artists()
+        album_keys = ('id', 'title_original', 'title_ru', 'year', 'release_group_mbid', 'artists', 'artist_mbids', 'status', 'reaction', 'notes', 'favorite')
+        artist_keys = ('id', 'name_original', 'mbid', 'artist_type', 'country', 'disambiguation')
+        def page(rows, start, keys):
+            end = start + limit
+            return {'items': [{k: row.get(k) for k in keys} for row in rows[start:end]],
+                    'total': len(rows), 'offset': start, 'next_offset': end if end < len(rows) else None, 'complete': end >= len(rows)}
+        return {'albums': page(albums, offset, album_keys), 'artists': page(artists, artist_offset, artist_keys),
+                'semantics': 'reaction=like/dislike is explicit album feedback; empty is unknown. Tracked artists are interests, not track likes. AI scores are not feedback.',
+                'radar_preferences': 'personal-radar/knowledge/preferences/music-preferences.yaml',
+                'workflow': 'skills/music-discovery/SKILL.md', 'youtube_mcp': 'personal-radar-youtube'}
     if name == 'content_status':
         return {'application': 'whats-new-checker', 'today': availability.now().date().isoformat(),
                 'timezone': 'Europe/Belgrade', 'providers': {

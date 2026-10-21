@@ -185,6 +185,34 @@ class ResearchStorageTests(unittest.TestCase):
         self.db_patch.stop()
         self.temp.cleanup()
 
+    def test_music_context_reactions_independent_pages_and_no_external_calls(self):
+        storage.add_music_artist({'name': 'Artist A', 'mbid': 'synthetic-artist-a'})
+        storage.add_music_artist({'name': 'Artist B', 'mbid': 'synthetic-artist-b'})
+        a = storage.add_item({'content_type': 'music', 'title_original': 'Album A', 'title_ru': 'Album A', 'artists': 'Artist A', 'year': 2025})
+        storage.add_item({'content_type': 'music', 'title_original': 'Album B', 'title_ru': 'Album B', 'artists': 'Artist B', 'year': 2026})
+        storage.update_item(a['id'], {'status': 'consumed', 'reaction': 'dislike', 'notes': 'too bright'})
+        storage.add_item({'title_original': 'Movie', 'title_ru': 'Movie', 'content_type': 'movie', 'year': 2025})
+        with patch.object(research, 'tmdb_get', side_effect=AssertionError('No providers')):
+            first = research.call('music_preferences_context', {'limit': 1})
+            second = research.call('music_preferences_context', {'limit': 1, 'offset': first['albums']['next_offset'], 'artist_offset': first['artists']['next_offset']})
+        self.assertEqual(first['albums']['total'], 2)
+        self.assertEqual(first['artists']['total'], 2)
+        self.assertFalse(first['albums']['complete'])
+        self.assertTrue(second['artists']['complete'])
+        albums = first['albums']['items'] + second['albums']['items']
+        self.assertEqual(next(m for m in albums if m['id'] == a['id'])['reaction'], 'dislike')
+        self.assertNotIn('raw_json', albums[0])
+        self.assertEqual(len(storage.list_library(content_type='music')), 2)
+
+    def test_music_context_rejects_unknown_fields_and_excludes_trash(self):
+        album = storage.add_item({'content_type': 'music', 'title_original': 'Album', 'title_ru': 'Album', 'artists': 'Artist'})
+        storage.trash_entity({'entity_type': 'album', 'id': album['id']})
+        self.assertEqual(research.call('music_preferences_context', {})['albums']['items'], [])
+        with self.assertRaises(ValueError):
+            research.call('music_preferences_context', {'limit': 201})
+        with self.assertRaises(ValueError):
+            research.call('music_preferences_context', {'execute': True})
+
     def movie(self, tmdb_id=123):
         return ai_digest.snapshot('movie', str(tmdb_id), {'item': {'title_original': 'Movie', 'year': '2025', 'tmdb_id': tmdb_id, 'content_type': 'movie'}})['snapshot_ref']
 
@@ -313,6 +341,13 @@ class ResearchStorageTests(unittest.TestCase):
 
 
 class McpTests(unittest.TestCase):
+    def test_music_context_requires_new_server_without_changing_film_minimum(self):
+        bridge = Bridge('http://127.0.0.1:8765'); bridge.ready = True
+        with patch.object(bridge, 'api', return_value={'application': 'whats-new-checker', 'version': 64}) as api:
+            result = bridge.handle({'jsonrpc': '2.0', 'id': 1, 'method': 'tools/call', 'params': {'name': 'music_preferences_context'}})
+        self.assertTrue(result['result']['isError'])
+        api.assert_called_once_with('/api/health')
+
     def test_handshake_tools_and_errors(self):
         bridge = Bridge('http://127.0.0.1:8765')
         req = lambda method, **kw: {'jsonrpc': '2.0', 'id': 1, 'method': method, **kw}

@@ -77,7 +77,8 @@ class Bridge:
                 args = params.get('arguments', {})
                 validate(args, spec['inputSchema'])
                 health = self.api('/api/health')
-                if health.get('application') != 'whats-new-checker' or health.get('version', 0) < 59:
+                minimum_version = 65 if name == 'music_preferences_context' else 59
+                if health.get('application') != 'whats-new-checker' or health.get('version', 0) < minimum_version:
                     raise ValueError('На порту другой сервис или устаревшая версия Content Checker; нужен перезапуск')
                 data = self.api('/api/research/call', {'name': name, 'arguments': args})
                 result = {'content': [{'type': 'text', 'text': json.dumps(data, ensure_ascii=False)}], 'isError': False}

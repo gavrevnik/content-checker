@@ -26,7 +26,7 @@ from app import ai_digest, research, artwork, fanart, listenbrainz, llm, musicbr
 STATIC_DIR = Path(__file__).resolve().parent / "static"
 PID_FILE = Path(__file__).resolve().parents[1] / ".runtime" / "server.pid"
 APPLICATION_ID = "whats-new-checker"
-APP_VERSION = 64
+APP_VERSION = 65
 
 
 class Handler(BaseHTTPRequestHandler):
