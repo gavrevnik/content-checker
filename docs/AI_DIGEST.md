@@ -7,7 +7,8 @@
 Запустить актуальный Content Checker через Life Hub или `Whats New Checker.app`, затем зарегистрировать stdio MCP:
 
 ```bash
-codex mcp add content-checker -- /Users/nikitagavrev/main/life-stack/content-checker/.venv/bin/python /Users/nikitagavrev/main/life-stack/content-checker/scripts/content_mcp.py
+# Выполнять из корня content-checker: регистрация сохраняет фактический путь.
+codex mcp add content-checker -- "$PWD/.venv/bin/python" "$PWD/scripts/content_mcp.py"
 ```
 
 В другом checkout заменить абсолютные пути; Python 3.10+ со стандартной библиотекой достаточен, дополнительный MCP SDK не требуется. В секции `[mcp_servers.content-checker]` конфигурации Codex рекомендуется `tool_timeout_sec = 180`. После регистрации переподключить MCP / открыть новый чат, если инструменты ещё не появились. [Официальная документация подключения MCP](https://learn.chatgpt.com/docs/extend/mcp?surface=cli).
